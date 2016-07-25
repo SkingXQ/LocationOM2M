@@ -153,6 +153,12 @@ public class CSEInitializer {
 		}
 		transaction.commit();
 	}
+	
+	private static void initLocationEntity() {
+	
+
+
+	}
 
 	/**
 	 * Sends {@link CseBase} resource in DataBase.
