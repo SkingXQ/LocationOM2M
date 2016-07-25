@@ -58,6 +58,8 @@ public class ShortName {
 	public static final String FANOUTPOINT = "fopt";
 	/** Short name for Group resource */
 	public static final String GROUP = "grp";
+	/** Short name for Location resource */
+	public static final String LOCATION = "loc"
 	/** Short name for GroupAnnc resource */
 	public static final String GROUPA = "grpA";
 	/** Short name for LocationPolicy resource */
