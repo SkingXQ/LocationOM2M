@@ -58,6 +58,7 @@ import org.eclipse.om2m.core.controller.PollingChannelUriController;
 import org.eclipse.om2m.core.controller.RemoteCSEController;
 import org.eclipse.om2m.core.controller.RequestController;
 import org.eclipse.om2m.core.controller.SubscriptionController;
+import org.eclipse.om2m.core.controller.LocationController;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.nblocking.NonBlockingHandler;
 import org.eclipse.om2m.core.redirector.Redirector;
@@ -297,6 +298,9 @@ public class Router implements CseService {
 		}
 		if(Patterns.match(Patterns.REQUEST_PATTERN, uri)){
 			return new RequestController();
+		}
+		if(Patterns.match(Patterns.LOCATION_PATTERN, uri)){
+			return new LocationController();
 		}
 		return null;
 	}
