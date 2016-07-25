@@ -33,6 +33,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
+import org.eclipse.om2m.commons.entities.LocationEntity;
 
 /**
  * Returns the corresponding DAO 
@@ -69,4 +70,6 @@ public interface DAOFactory {
 
 	public abstract DAO<AccessControlOriginatorEntity> getAccessControlOriginatorDAO();
 	
+	public abstract DAO<LocationEntity> getLocationDAO();
 }
+
