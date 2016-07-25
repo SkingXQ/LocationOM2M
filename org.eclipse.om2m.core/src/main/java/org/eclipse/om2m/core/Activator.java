@@ -58,6 +58,7 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		LOGGER.info("Starting CSE...");
 		Activator.context = bundleContext;
+                LOGGER.info("here");
 
 		// Track the Data Mapper Service 
 		dataMapperServiceTracker = new ServiceTracker<Object,Object>(bundleContext, DataMapperService.class.getName(), null){
