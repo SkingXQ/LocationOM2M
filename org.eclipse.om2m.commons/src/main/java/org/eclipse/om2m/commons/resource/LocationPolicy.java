@@ -76,24 +76,20 @@ import javax.xml.datatype.Duration;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "locationSource", "locationUpdatePeriod",
-		"locationTargetID", "locationServer", "locationContainerID",
-		"locationContainerName", "locationStatus", "childResource",
-		"subscription" })
+		"groupID", "Name", "locationStatus", "Method", 
+                "childResource", "subscription" })
 @XmlRootElement(name = "locationPolicy")
 public class LocationPolicy extends AnnounceableResource {
 
 	@XmlElement(required = true)
 	protected BigInteger locationSource;
 	protected Duration locationUpdatePeriod;
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String locationTargetID;
 	@XmlSchemaType(name = "anyURI")
-	protected String locationServer;
-	@XmlSchemaType(name = "anyURI")
-	protected String locationContainerID;
-	protected String locationContainerName;
+	protected String groupID;
+	protected String Name;
 	@XmlElement(required = true)
 	protected BigInteger locationStatus;
+	protected String Method;
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
@@ -141,54 +137,12 @@ public class LocationPolicy extends AnnounceableResource {
 	}
 
 	/**
-	 * Gets the value of the locationTargetID property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getLocationTargetID() {
-		return locationTargetID;
-	}
-
-	/**
-	 * Sets the value of the locationTargetID property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setLocationTargetID(String value) {
-		this.locationTargetID = value;
-	}
-
-	/**
-	 * Gets the value of the locationServer property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getLocationServer() {
-		return locationServer;
-	}
-
-	/**
-	 * Sets the value of the locationServer property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setLocationServer(String value) {
-		this.locationServer = value;
-	}
-
-	/**
 	 * Gets the value of the locationContainerID property.
 	 * 
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getLocationContainerID() {
+	public String getGroupID() {
 		return locationContainerID;
 	}
 
@@ -199,7 +153,7 @@ public class LocationPolicy extends AnnounceableResource {
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setLocationContainerID(String value) {
+	public void setGroupID(String value) {
 		this.locationContainerID = value;
 	}
 
@@ -209,8 +163,8 @@ public class LocationPolicy extends AnnounceableResource {
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getLocationContainerName() {
-		return locationContainerName;
+	public String getName() {
+		return Name;
 	}
 
 	/**
@@ -220,8 +174,8 @@ public class LocationPolicy extends AnnounceableResource {
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setLocationContainerName(String value) {
-		this.locationContainerName = value;
+	public void setName(String value) {
+		this.Name = value;
 	}
 
 	/**
@@ -244,6 +198,27 @@ public class LocationPolicy extends AnnounceableResource {
 	public void setLocationStatus(BigInteger value) {
 		this.locationStatus = value;
 	}
+
+        /**
+         * Gets the value of the locationContainerName property.
+         * 
+         * @return possible object is {@link String }
+         * 
+         */
+        public String getMethod() {
+                return Method;
+        }
+
+        /**
+         * Sets the value of the locationContainerName property.
+         * 
+         * @param value
+         *            allowed object is {@link String }
+         * 
+         */
+        public void setMethod(String value) {
+                this.Method = value;
+        }
 
 	/**
 	 * Gets the value of the childResource property.
