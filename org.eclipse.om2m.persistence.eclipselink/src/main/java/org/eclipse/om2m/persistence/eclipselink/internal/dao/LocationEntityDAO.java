@@ -21,22 +21,22 @@ public class LocationEntityDAO extends AbstractDAO<LocationEntity>{
         @Override
         public LocationEntity find(DBTransaction dbTransaction, Object id) {
                 DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
-                return transaction.getEm().find(GroupEntity.class, id);
+                return transaction.getEm().find(LocationEntity.class, id);
         }
 
         @Override
-        public void delete(DBTransaction dbTransaction, GroupEntity resource) {
+        public void delete(DBTransaction dbTransaction, LocationEntity resource) {
                 DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
                 transaction.getEm().remove(resource);
                 transaction.getEm().getEntityManagerFactory().getCache().evict(CSEBaseEntity.class);
-                transaction.getEm().getEntityManagerFactory().getCache().evict(AeEntity.class);
-                transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
-                transaction.getEm().getEntityManagerFactory().getCache().evict(AeAnncEntity.class);
-                transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
+                //transaction.getEm().getEntityManagerFactory().getCache().evict(AeEntity.class);
+                //transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCSEEntity.class);
+                //transaction.getEm().getEntityManagerFactory().getCache().evict(AeAnncEntity.class);
+                //transaction.getEm().getEntityManagerFactory().getCache().evict(RemoteCseAnncEntity.class);
         }
 
         @Override
-        public void update(DBTransaction dbTransaction, GroupEntity resource) {
+        public void update(DBTransaction dbTransaction, LocationEntity resource) {
                 List<LabelEntity> lbls = processLabels(dbTransaction, resource.getLabelsEntities());
                 resource.setLabelsEntities(lbls);
                 super.update(dbTransaction, resource);
