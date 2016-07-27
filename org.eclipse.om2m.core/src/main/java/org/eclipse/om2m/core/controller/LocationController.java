@@ -21,6 +21,7 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
+import org.eclipse.om2m.commons.entities.LocationEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
@@ -51,27 +52,48 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
  */
 public class LocationController extends Controller {
 
-        @Override
-        public ResponsePrimitive doCreate(RequestPrimitive request) {
-                ResponsePrimitive response = new ResponsePrimitive(request);
-
-	
+    @Override
+    public ResponsePrimitive doCreate(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
+        DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+        if (dao == null) {
+            throw new ResourceNotFoundException("Cannot find parent resource");
+        }
+        // request is create in the cse base  so parent is cse base not group entity
 	}
 
 
-        @Override
-        public ResponsePrimitive doRetrieve(RequestPrimitive request) {
+    @Override
+    public ResponsePrimitive doRetrieve(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
+        
+        LocationEntity locationEntity = dbs.getDAOFactory().getLocationDAO().find(transaction, request.getTargetId());
+
+        if (LocationEntity == null){
+            throw new ResourceNotFoundException("Resource not found");
+        }   
+        // TODO: check
+        checkACP(LocationEntity.getAccessControlPolicies(), request.getFrom(), 
+                Operation.RETRIEVE);
+    
+
+        // Create the object used to create the representation of the resource TODO
+        LocationPolicy location = EntityMapperFactory.getLocationMapper().mapEntityToResource(LocationEntity, request);
+        response.setContent(location);
+
+        response.setResponseStatusCode(ResponseStatusCode.OK);
+
+        return response;
 
 	}
 
-        @Override
-        public ResponsePrimitive doUpdate(RequestPrimitive request) {
+    @Override
+    public ResponsePrimitive doUpdate(RequestPrimitive request) {
 
 	}
 
-
-        @Override
-        public ResponsePrimitive doDelete(RequestPrimitive request) {
+    @Override
+    public ResponsePrimitive doDelete(RequestPrimitive request) {
 
 	}
 }
