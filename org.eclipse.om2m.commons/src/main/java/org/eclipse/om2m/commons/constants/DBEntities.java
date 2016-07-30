@@ -31,6 +31,8 @@ import org.eclipse.om2m.commons.entities.PollingChannelEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
+import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
+import org.eclipse.om2m.commons.enetiyes.LocationParameterEntity;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 
 /**
@@ -92,7 +94,11 @@ public class DBEntities {
 	
 	public static final String NODE_ENTITY = "NODE";
 	
-	
+    /** name of the location policy entity */
+    public static final String LOCATIONPOLICY_ENTITY = "LOPO";
+   
+    /** name of the location parameter entity */
+    public static final String LOCATIONPARAMETER_ENTITY = "LOPA"
 	/** Name of the GROUP entity */
 	public static final String GROUP_ENTITY = "GRP";
 	// JOIN-LINKS TABLES NAMES AND COLUMNS
