@@ -251,6 +251,15 @@ public class DBEntities {
 	public static final String ANDI_JOIN_ID = "ANDI_JOIN_ID";
 	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
 	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
-	
+
+    // CSEB - LOCATIONPOLICY
+    public static final String CSEB_LOCP_JOIN = "CSEB_LOCP_JOIN";
+    // LOC ID in join table
+    public static final String LOCP_JOIN_ID = "LOCP_JOIND_ID";
+ 
+    // LOCATIONPARAMETER - LOCATION POLICY 
+    public static final String LOCPA_LOCP_JOIN = "LOCPA_LOCP_JOIN";   	
+    // LOCATIONPARAMETER IN JOIN TABLE
+    public static final String LOCPA_JOIN_ID = "LOCPA_JOIN_ID";
 }
 
