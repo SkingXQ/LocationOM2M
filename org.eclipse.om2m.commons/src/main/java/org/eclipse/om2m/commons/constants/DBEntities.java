@@ -215,6 +215,8 @@ public class DBEntities {
 	public static final String ACPSUB_JOIN = "ACP_SUB_JOIN";
 	/** Name of the join table between SCH & SUB */
 	public static final String SCHSUB_JOIN = "SCH_SUB_JOIN";
+    /** Name of the join table between LOC & SUB*/
+    public static final String LOCSUB_JOIN = "LOC_SUB_JOIN";
 	/** Name of the join table between AE & PCH */
 	public static final String AEPCH_JOIN = "AE_PCH_JOIN";
 	/** Name of the join table between CSR & PCH */
@@ -225,7 +227,8 @@ public class DBEntities {
 	public static final String SCH_JOIN_ID = "SCH_JOIN_ID";
 	/** ID of PCH in join table */
 	public static final String PCH_JOIN_ID = "PCH_JOIN_ID";
-	
+
+
 	// CSEB - REQ
 	/** Name of the join table between CSEB & REQ*/
 	public static final String CSEB_REQ_JOIN = "CSEB_REQ_JOIN";

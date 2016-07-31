@@ -66,6 +66,8 @@ public class ShortName {
 	public static final String LOCATIONPOLICY = "lcp";
 	/** Short name for LocationPolicyAnnc resource */
 	public static final String LOCATIONPOLICYA = "lcpA";
+    /** Short name for LocationParameter resource */
+    public static final String LOCATIONPARAMETER = "locpara";
 	/** Short name for M2mServiceSubscriptionProfile resource */
 	public static final String MSSP = "mssp";
 	/** Short name for MgmtCmd resource */
@@ -255,6 +257,20 @@ public class ShortName {
 	//TODO see if relevant
 	public static final String TYPE = "ty";
 	
+    // specific attributes for Location Policy resource
+    /** Short Nmae for the location source attribute */
+    public static final String LOCATION_RESOURCE = "lore";
+    /** Short Name for the location UpdatePeriod */
+    public static final String LOCATIONUPDATEPERIOD = "louppe";
+    /** Short Name for the location groupID */
+    public static final String LOCATIONGROUPID = "logrid";
+    /** Short Name for the location name */
+    public static final String LOCATIONNAME = "locationname";
+    /** Short Name for the location status*/
+    public static final String LOCATIONSTATUS = "locationstatus";
+    /** Short Name for the location child resource*/
+     
+
 	// specific attributes for Group resource
 	/** Short Name for the member type attribute */
 	public static final String MEMBER_TYPE = "mt";
