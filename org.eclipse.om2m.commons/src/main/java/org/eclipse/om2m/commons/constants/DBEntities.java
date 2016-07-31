@@ -261,5 +261,7 @@ public class DBEntities {
     public static final String LOCPA_LOCP_JOIN = "LOCPA_LOCP_JOIN";   	
     // LOCATIONPARAMETER IN JOIN TABLE
     public static final String LOCPA_JOIN_ID = "LOCPA_JOIN_ID";
+    /** Name of the join table between LOCP & ch CNT */
+    public static final String LOCP_CNT_JOIN = "LOPC_CSR_CHCNT_JOIN";
 }
 
