@@ -33,6 +33,8 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
+import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlOriginatorDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AccessControlPolicyDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.AeDAO;
@@ -48,7 +50,8 @@ import org.eclipse.om2m.persistence.eclipselink.internal.dao.RemoteCSEDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.RequestEntityDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.SubscriptionDAO;
 import org.eclipse.om2m.persistence.eclipselink.internal.dao.UriMapperDAO;
-import org.eclipse.om2m.persistence.eclipselink.internal.dao.LocationEntiyDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.LocationParameterDAO;
+import org.eclipse.om2m.persistence.eclipselink.internal.dao.LocationPolicyDAO;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DAOFactory;
 
@@ -130,8 +133,13 @@ public class DAOFactoryImpl implements DAOFactory {
 	}
 	
 	@Override
-	public DAO<LocationEntity> getLocationDAO() {
-		return new LocationEntityDAO();
+	public DAO<LocationPolicyEntity> getLocationPolicyDAO() {
+		return new LocationPolicyDAO();
 	}
+
+    @Overide
+    public DAO<LocationParameterEntity> getLocationParameterDAO() {
+        return new LocationParameterDAO;
+    }
 	
 }
