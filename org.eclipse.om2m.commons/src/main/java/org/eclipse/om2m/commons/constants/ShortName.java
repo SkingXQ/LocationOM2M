@@ -259,7 +259,7 @@ public class ShortName {
 	
     // specific attributes for Location Policy resource
     /** Short Nmae for the location source attribute */
-    public static final String LOCATION_RESOURCE = "lore";
+    public static final String LOCATIONRESOURCE = "lore";
     /** Short Name for the location UpdatePeriod */
     public static final String LOCATIONUPDATEPERIOD = "louppe";
     /** Short Name for the location groupID */
@@ -268,8 +268,8 @@ public class ShortName {
     public static final String LOCATIONNAME = "locationname";
     /** Short Name for the location status*/
     public static final String LOCATIONSTATUS = "locationstatus";
-    /** Short Name for the location child resource*/
-     
+    /** Short Name for the location method*/
+    public static final String LOCATIONMETHOD;
 
 	// specific attributes for Group resource
 	/** Short Name for the member type attribute */
