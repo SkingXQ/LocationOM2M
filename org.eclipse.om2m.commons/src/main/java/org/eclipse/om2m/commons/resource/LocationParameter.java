@@ -57,14 +57,15 @@ import javax.xml.datatype.Duration;
                 "locationContainerID", "locationName", 
                 "locationStatus", "childResource",
                 "subscription" })
-@XmlRootElement(name = "locationPolicy")
-public class LocationPolicy extends AnnounceableResource {
+@XmlRootElement(name = "locationParameter")
+public class LocationParameter extends AnnounceableResource {
 
 
         @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
         protected String locationTargetID;
         @XmlSchemaType(name = "anyURI")
         protected String locationServer;
+        // remove the container part
         @XmlSchemaType(name = "anyURI")
         protected String locationContainerID;
         protected String locationName;

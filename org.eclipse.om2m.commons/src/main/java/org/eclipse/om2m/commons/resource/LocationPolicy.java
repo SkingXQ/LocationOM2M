@@ -93,6 +93,9 @@ public class LocationPolicy extends AnnounceableResource {
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
+    /*@XmlElement(name = ShortName.LOCATIONPARAMETER, namespace = "http://www.onem2m.org/xml/protocol
+    s")
+    protected List<LocationParameter> locationParameter;*/
 
 	/**
 	 * Gets the value of the locationSource property.
