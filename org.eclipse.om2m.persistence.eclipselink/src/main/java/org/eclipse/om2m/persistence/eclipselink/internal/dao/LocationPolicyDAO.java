@@ -16,7 +16,7 @@ import org.eclipse.om2m.persistence.eclipselink.internal.DBTransactionJPAImpl;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
 
-public class LocationPolicyEntityDAO extends AbstractDAO<LocationPolicyEntity>{
+public class LocationPolicyDAO extends AbstractDAO<LocationPolicyEntity>{
 
     @Override
     public LocationPolicyEntity find(DBTransaction dbTransaction, Object id) {
