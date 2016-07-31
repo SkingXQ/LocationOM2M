@@ -269,7 +269,13 @@ public class ShortName {
     /** Short Name for the location status*/
     public static final String LOCATIONSTATUS = "locationstatus";
     /** Short Name for the location method*/
-    public static final String LOCATIONMETHOD;
+    public static final String LOCATIONMETHOD = "locationmethod";
+    /** Short Name for the location parameter target id */
+    public static final String LOCATIONTARGETID = "locationtargetid";
+    /** Short Name for the location server */
+    public static final String LOCATIONSERVER = "locationserver";
+    /** Short Name for the location status */
+    public static final String LOCATIONSTATUS = "locationstatus";
 
 	// specific attributes for Group resource
 	/** Short Name for the member type attribute */

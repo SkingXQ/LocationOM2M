@@ -263,5 +263,12 @@ public class DBEntities {
     public static final String LOCPA_JOIN_ID = "LOCPA_JOIN_ID";
     /** Name of the join table between LOCP & ch CNT */
     public static final String LOCP_CNT_JOIN = "LOPC_CSR_CHCNT_JOIN";
+    // CSEB - LOCATIONPARAMETER
+    public static final String CSEB_LOCPA_JOIN = "CSEB_LOCPA_JOIN";
+    // LOCATIONPARAMETER - CSEB
+    public static final String LOCPA_SUB_JOIN = "LOCPA_SUB_JOIN";
+
 }
+
+
 
