@@ -15,7 +15,7 @@
  *     Guillaume Garzone : Developer
  *     François Aïssaoui : Developer
  *
- * New contributors :
+ * New contributors : sking
  *******************************************************************************/
 package org.eclipse.om2m.persistence.eclipselink.internal;
 
