@@ -90,7 +90,9 @@ public class Patterns {
 
 	public static final Pattern AREA_NWK_DEVICE_INFO_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.ANDI + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-	public static final Pattern LOCATION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATION + Constants.PREFIX_SEPERATOR + ID_STRING);
+	public static final Pattern LOCATION_POLICY_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPOLICY + Constants.PREFIX_SEPERATOR + ID_STRING);
+
+    public static final Pattern LOCATION_POLICY_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPARAMETER + Constants.PREFIX_SEPERATOR + ID_STRING)
 
 	/** Non-hierarchical URI pattern */
 	public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
