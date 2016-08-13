@@ -64,7 +64,7 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
 */
 
     @Column(name = ShortName.LOCATIONTARGETID)
-    protected String locationTargtID;
+    protected String locationTargetID;
     @Column(name = ShortName.LOCATIONSERVER)
     protected String locationServer;
     @Column(name = ShortName.LOCATIONSTATUS)
@@ -119,14 +119,14 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
     /** 
      * @return location status
      */
-    public String getLocationStatus() {
+    public BigInteger getLocationStatus() {
         return locationStatus;
     }   
 
     /** 
      * @param locationStatus
      */
-     public void setLocationStatus(String locationStatus) {
+     public void setLocationStatus(BigInteger locationStatus) {
          this.locationStatus = locationStatus;
      }   
     
