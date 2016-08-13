@@ -61,9 +61,9 @@ public class LocationPolicyController extends Controller {
             throw new ResourceNotFoundException("Cannot find parent resource");
         }
     
-        ResourceEntity parentEntity = (ResourceEntity) dao.find(transactiom, request.getTargetId());
+        ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
         
-        if (parentEnttiy == null) {
+        if (parentEntity == null) {
             throw new ResourceNotFoundException("Can't find parent resource");
         }        
         // request is create in the cse base  so parent is cse base not group entity
@@ -107,19 +107,19 @@ public class LocationPolicyController extends Controller {
             }
             locationPolicyEntity.setName(request.getName());
         } else {
-            locationPolicyEntity.setName(ShortName.LOCATION_POLICY + "_" + generatedId);
+            locationPolicyEntity.setName(ShortName.LOCATIONPOLICY + "_" + generatedId);
         }
         locationPolicyEntity.setHierarchicalURI(parentEntity.getHierarchicalURI()+ "/" + locationPolicyEntity.getName());
 
 
-        if (!UriMapper.addNewUri(locationPolicyEntity.getHierarchicalURI(), locationPolicyEntity.getResourceID(), ResourceType.LOCATIONPOLICY)){
+        if (!UriMapper.addNewUri(locationPolicyEntity.getHierarchicalURI(), locationPolicyEntity.getResourceID(), ResourceType.LOCATION_POLICY)){
             throw new ConflictException("Name already present in the parent collection.");
         }
 
-        dbs.getDAOFactory().getLocationPolicyDAO().create(transaction, LocationPolicyEntity);
+        dbs.getDAOFactory().getLocationPolicyDAO().create(transaction, locationPolicyEntity);
 
         // Get the managed object from db
-        GroupEntity locationPolicyDB = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, locationPolicyEntity.getResourceID());
+        LocationPolicyEntity locationPolicyDB = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, locationPolicyEntity.getResourceID());
 
         dao.update(transaction, parentEntity);
         transaction.commit();
@@ -136,18 +136,18 @@ public class LocationPolicyController extends Controller {
     public ResponsePrimitive doRetrieve(RequestPrimitive request) {
         ResponsePrimitive response = new ResponsePrimitive(request);
         
-        LocationEntity locationEntity = dbs.getDAOFactory().getLocationDAO().find(transaction, request.getTargetId());
+        LocationPolicyEntity locationPolicyEntity = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, request.getTargetId());
 
-        if (LocationEntity == null){
+        if (locationPolicyEntity == null){
             throw new ResourceNotFoundException("Resource not found");
         }   
         // TODO: check
-        checkACP(LocationEntity.getAccessControlPolicies(), request.getFrom(), 
-                Operation.RETRIEVE);
+        // checkACP(LocationPolicyEntity.getAccessControlPolicies(), request.getFrom(), 
+        //        Operation.RETRIEVE);
     
 
         // Create the object used to create the representation of the resource TODO
-        LocationPolicy location = EntityMapperFactory.getLocationMapper().mapEntityToResource(LocationEntity, request);
+        LocationPolicy location = EntityMapperFactory.getLocationMapper().mapEntityToResource(locationPolicyEntity, request);
         response.setContent(location);
 
         response.setResponseStatusCode(ResponseStatusCode.OK);
@@ -159,10 +159,11 @@ public class LocationPolicyController extends Controller {
     @Override
     public ResponsePrimitive doUpdate(RequestPrimitive request) {
 
+            return null;
 	}
 
     @Override
     public ResponsePrimitive doDelete(RequestPrimitive request) {
-
+            return null;
 	}
 }
