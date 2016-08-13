@@ -44,8 +44,8 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @Entity(name=DBEntities.LOCATIONPOLICY_ENTITY)
 public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
 
-    @Column(name = ShortName.LOCATIONSOURCE)
-    protected BitInteger locationSource;
+    @Column(name = ShortName.LOCATIONRESOURCE)
+    protected BigInteger locationSource;
     
     @Column(name = ShortName.LOCATIONUPDATEPERIOD)
     protected Duration locationUpdatePeriod;
@@ -56,7 +56,7 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
  
     // TODO: locationName or name  
     @Column(name = ShortName.LOCATIONNAME)
-    protected BitInteger locationName;
+    protected String locationName;
 
     // TODO: locationMethod or method?
     @Column(name = ShortName.LOCATIONSTATUS)
@@ -91,11 +91,11 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     protected LocationParameter locationParameter;*/
     
     // get and set locationSource
-    public BitInteger getLocationSource() {
+    public BigInteger getLocationSource() {
         return locationSource;
     }   
 
-    public void setLocationSource(String locationSource) {
+    public void setLocationSource(BigInteger locationSource) {
         this.locationSource = locationSource;
     }
 
@@ -122,7 +122,7 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
         return locationName;
     }
 
-    public void setLocationName(Sting locationName) {
+    public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
  
@@ -136,12 +136,11 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     }
     
     // get and set parent CSEBase
-    public List<CSEBaseEntity> getParentCseBase() {
-        if(parentCseBase == null)
+    public CSEBaseEntity getParentCseBase() {
         return parentCseBase;
     }
    
-    public void setParentCseBase(List<CSEBaseEntity>  parentCseBase) {
+    public void setParentCseBase(CSEBaseEntity  parentCseBase) {
         this.parentCseBase = parentCseBase;
     }
 
