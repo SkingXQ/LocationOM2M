@@ -75,6 +75,7 @@ public class LocationParameter extends AnnounceableResource {
         @XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
         protected List<Subscription> subscription;
 
+
         /**
          * Gets the value of the locationTargetID property.
          * 
@@ -144,9 +145,9 @@ public class LocationParameter extends AnnounceableResource {
          * @return possible object is {@link String }
          * 
          */
-        public String getLocationName() {
-                return locationContainerName;
-        }
+        //public String getLocationName() {
+        //        return locationContainerName;
+        //}
 
         /**
          * Sets the value of the locationContainerName property.
@@ -155,9 +156,9 @@ public class LocationParameter extends AnnounceableResource {
          *            allowed object is {@link String }
          * 
          */
-        public void setLocationName(String value) {
-                this.locationContainerName = value;
-        }
+        //public void setLocationName(String value) {
+        //        this.locationContainerName = value;
+        //}
 
         /**
          * Gets the value of the locationStatus property.

@@ -96,6 +96,11 @@ public class LocationPolicy extends AnnounceableResource {
     /*@XmlElement(name = ShortName.LOCATIONPARAMETER, namespace = "http://www.onem2m.org/xml/protocol
     s")
     protected List<LocationParameter> locationParameter;*/
+        
+        // TODO: check use or not
+        @XmlSchemaType(name = "anyURI")
+        protected String locationContainerID;
+        protected String locationContainerName;
 
 	/**
 	 * Gets the value of the locationSource property.
