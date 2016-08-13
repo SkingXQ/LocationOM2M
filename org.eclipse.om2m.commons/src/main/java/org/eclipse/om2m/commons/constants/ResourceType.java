@@ -61,7 +61,6 @@ public class ResourceType {
 	public static final int NODE_ANNC = 10014;
 	public static final int REMOTE_CSE_ANNC = 10016;
 	public static final int SCHEDULE_ANNC = 10018;
-    public static final int LOCATION_POLICY = 10011;
-    public static final int LOCATION_PARAMETER = 10012;
+        public static final int LOCATION_PARAMETER = 10012;
 	
 }
