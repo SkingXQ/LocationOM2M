@@ -300,12 +300,12 @@ public class Router implements CseService {
 		if(Patterns.match(Patterns.REQUEST_PATTERN, uri)){
 			return new RequestController();
 		}
-		if(Patterns.match(Patterns.LOCATION_PATTERN, uri)){
+		if(Patterns.match(Patterns.LOCATION_POLICY_PATTERN, uri)){
 			return new LocationPolicyController();
 		}
-        if(Patterns.match(Patterns.LOCATION_PARAMETER_PATTERN, uri)) {
-            return new LocationParameterController();
-        }
+                if(Patterns.match(Patterns.LOCATION_PARAMETER_PATTERN, uri)) {
+                        return new LocationParameterController();
+                }
 		return null;
 	}
 
