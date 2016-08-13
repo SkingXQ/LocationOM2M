@@ -137,9 +137,9 @@ public class DAOFactoryImpl implements DAOFactory {
 		return new LocationPolicyDAO();
 	}
 
-    @Overide
-    public DAO<LocationParameterEntity> getLocationParameterDAO() {
-        return new LocationParameterDAO;
-    }
+        @Override
+        public DAO<LocationParameterEntity> getLocationParameterDAO() {
+                return new LocationParameterDAO();
+        }
 	
 }

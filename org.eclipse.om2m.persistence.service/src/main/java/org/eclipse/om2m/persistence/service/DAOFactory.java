@@ -73,6 +73,6 @@ public interface DAOFactory {
 	
 	public abstract DAO<LocationPolicyEntity> getLocationPolicyDAO();
 
-    public abstract DAO<LocationParameterEntity> getLocationParameterDAO();
+        public abstract DAO<LocationParameterEntity> getLocationParameterDAO();
 }
 
