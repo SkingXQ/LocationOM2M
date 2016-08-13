@@ -32,7 +32,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.UriMapperEntity;
 import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
-import org.eclipse.om2m.commons.enetiyes.LocationParameterEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 
 /**
@@ -94,11 +94,11 @@ public class DBEntities {
 	
 	public static final String NODE_ENTITY = "NODE";
 	
-    /** name of the location policy entity */
-    public static final String LOCATIONPOLICY_ENTITY = "LOPO";
+        /** name of the location policy entity */
+        public static final String LOCATIONPOLICY_ENTITY = "LOPO";
    
-    /** name of the location parameter entity */
-    public static final String LOCATIONPARAMETER_ENTITY = "LOPA"
+       /** name of the location parameter entity */
+        public static final String LOCATIONPARAMETER_ENTITY = "LOPA";
 	/** Name of the GROUP entity */
 	public static final String GROUP_ENTITY = "GRP";
 	// JOIN-LINKS TABLES NAMES AND COLUMNS
@@ -252,21 +252,21 @@ public class DBEntities {
 	public static final String ANDINOD_JOIN = "ANDI_NOD_JOIN";
 	public static final String ANDIACP_JOIN = "ANDI_ACP_JOIN";
 
-    // CSEB - LOCATIONPOLICY
-    public static final String CSEB_LOCP_JOIN = "CSEB_LOCP_JOIN";
-    // LOC ID in join table
-    public static final String LOCP_JOIN_ID = "LOCP_JOIND_ID";
+        // CSEB - LOCATIONPOLICY
+        public static final String CSEB_LOCP_JOIN = "CSEB_LOCP_JOIN";
+        // LOC ID in join table
+        public static final String LOCP_JOIN_ID = "LOCP_JOIND_ID";
  
-    // LOCATIONPARAMETER - LOCATION POLICY 
-    public static final String LOCPA_LOCP_JOIN = "LOCPA_LOCP_JOIN";   	
-    // LOCATIONPARAMETER IN JOIN TABLE
-    public static final String LOCPA_JOIN_ID = "LOCPA_JOIN_ID";
-    /** Name of the join table between LOCP & ch CNT */
-    public static final String LOCP_CNT_JOIN = "LOPC_CSR_CHCNT_JOIN";
-    // CSEB - LOCATIONPARAMETER
-    public static final String CSEB_LOCPA_JOIN = "CSEB_LOCPA_JOIN";
-    // LOCATIONPARAMETER - CSEB
-    public static final String LOCPA_SUB_JOIN = "LOCPA_SUB_JOIN";
+        // LOCATIONPARAMETER - LOCATION POLICY 
+        public static final String LOCPA_LOCP_JOIN = "LOCPA_LOCP_JOIN";   	
+        // LOCATIONPARAMETER IN JOIN TABLE
+        public static final String LOCPA_JOIN_ID = "LOCPA_JOIN_ID";
+        /** Name of the join table between LOCP & ch CNT */
+        public static final String LOCP_CHCNT_JOIN = "LOPC_CSR_CHCNT_JOIN";
+        // CSEB - LOCATIONPARAMETER
+        public static final String CSEB_LOCPA_JOIN = "CSEB_LOCPA_JOIN";
+        // LOCATIONPARAMETER - CSEB
+        public static final String LOCPA_SUB_JOIN = "LOCPA_SUB_JOIN";
 
 }
 
