@@ -92,7 +92,7 @@ public class Patterns {
 
 	public static final Pattern LOCATION_POLICY_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPOLICY + Constants.PREFIX_SEPERATOR + ID_STRING);
 
-    public static final Pattern LOCATION_POLICY_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPARAMETER + Constants.PREFIX_SEPERATOR + ID_STRING)
+        public static final Pattern LOCATION_PARAMETER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPARAMETER + Constants.PREFIX_SEPERATOR + ID_STRING);
 
 	/** Non-hierarchical URI pattern */
 	public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
@@ -159,8 +159,8 @@ public class Patterns {
 		if (match(NODE_PATTERN, uri)) {
 			return db.getDAOFactory().getNodeEntityDAO();
 		}
-		if(match(LOCATION_PATTERN, uri)) {
-			return db.getDAOFactory().getLocationDAO();
+		if(match(LOCATION_POLICY_PATTERN, uri)) {
+			return db.getDAOFactory().getLocationPolicyDAO();
 		}
 		return null;
 	}
