@@ -27,6 +27,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -42,6 +45,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *
  */
 @Entity(name=DBEntities.LOCATIONPOLICY_ENTITY)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
 
     @Column(name = ShortName.LOCATIONRESOURCE)
@@ -66,10 +70,17 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CSEBaseEntity.class)
     @JoinTable(
         name = DBEntities.CSEB_LOCP_JOIN,
-        joinColumns = { @JoinColumn(name = DBEntities.LOCP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) },  
+        joinColumns = { @JoinColumn(name = DBEntities.LOCP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) },
         inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
-        )   
+        )
     protected CSEBaseEntity parentCseBase;
+ //   @ManyToOne(fetch = FetchType.LAZY, targetEntity n= CSEBaseEntity.class)
+   // @JoinTable(
+     //   name = DBEntities.CSEB_LOCP_JOIN,
+       /// joinColumns = { @JoinColumn(name = DBEntities.LOCP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) },  
+       // inverseJoinColumns = { @JoinColumn(name = DBEntities.CSEB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
+       // )   
+    //protected CSEBaseEntity parentCseBase;
 
     // list of child CNT
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
