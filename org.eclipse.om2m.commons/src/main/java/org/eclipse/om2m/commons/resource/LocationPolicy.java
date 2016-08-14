@@ -90,12 +90,9 @@ public class LocationPolicy extends AnnounceableResource {
 	@XmlElement(required = true)
 	protected BigInteger locationStatus;
 	protected String locationMethod;
-	protected List<ChildResourceRef> childResource;
-	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
-	protected List<Subscription> subscription;
-    /*@XmlElement(name = ShortName.LOCATIONPARAMETER, namespace = "http://www.onem2m.org/xml/protocol
-    s")
-    protected List<LocationParameter> locationParameter;*/
+
+
+
         
         // TODO: check use or not
         @XmlSchemaType(name = "anyURI")
