@@ -65,7 +65,7 @@ import org.eclipse.om2m.persistence.service.DBTransaction;
  * Controller for group
  *
  */
-public class GroupController extends Controller {
+public class LocationParameterController extends Controller {
 
 	/*
 	 * 							Req

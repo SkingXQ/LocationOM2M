@@ -147,7 +147,7 @@ public class LocationPolicyController extends Controller {
     
 
         // Create the object used to create the representation of the resource TODO
-        LocationPolicy location = EntityMapperFactory.getLocationMapper().mapEntityToResource(locationPolicyEntity, request);
+        LocationPolicy location = EntityMapperFactory.getLocationPolicyMapper().mapEntityToResource(locationPolicyEntity, request);
         response.setContent(location);
 
         response.setResponseStatusCode(ResponseStatusCode.OK);
@@ -155,6 +155,8 @@ public class LocationPolicyController extends Controller {
         return response;
 
 	}
+     
+    // TODO
 
     @Override
     public ResponsePrimitive doUpdate(RequestPrimitive request) {
