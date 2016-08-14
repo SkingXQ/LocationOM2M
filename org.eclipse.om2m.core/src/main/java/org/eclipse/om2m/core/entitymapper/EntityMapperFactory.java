@@ -47,6 +47,7 @@ import org.eclipse.om2m.commons.resource.PollingChannel;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.LocationPolicy;
 
 /**
  * Entity Mapper Factory
@@ -109,6 +110,16 @@ public class EntityMapperFactory {
 	public static EntityMapper<AreaNwkDeviceInfoEntity, AreaNwkDeviceInfo> getAreaNwkDeviceInfoMapper(){
 		return new AreaNwkDeviceInfoMapper();
 	}
+    
+        /** Get the Location Policy mapper */
+        public static EntityMapper<LocationPolicyEntity, LocationPolicy> getLocationPolicyMapper() {
+                return new LocationPolicyMapper();
+        }
+    
+        /** Get the Location Parameter mapper */
+        //public static EntityMapper<LocationParameterEntity, LocationParameter> getLocationParameterMapper() {
+        //        return new LocationParameterMapper();
+        // }
 	
 	/**
 	 * Get entity mapper from resource type
