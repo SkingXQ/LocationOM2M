@@ -76,7 +76,7 @@ import javax.xml.datatype.Duration;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "locationSource", "locationUpdatePeriod",
-		"groupID", "Name", "locationStatus", "Method", 
+		"groupID", "LocationName", "locationStatus", "Method", 
                 "childResource", "subscription" })
 @XmlRootElement(name = "locationPolicy")
 public class LocationPolicy extends AnnounceableResource {
@@ -86,10 +86,10 @@ public class LocationPolicy extends AnnounceableResource {
 	protected Duration locationUpdatePeriod;
 	@XmlSchemaType(name = "anyURI")
 	protected String groupID;
-	protected String Name;
+	protected String locationName;
 	@XmlElement(required = true)
 	protected BigInteger locationStatus;
-	protected String Method;
+	protected String locationMethod;
 	protected List<ChildResourceRef> childResource;
 	@XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
 	protected List<Subscription> subscription;
@@ -171,8 +171,8 @@ public class LocationPolicy extends AnnounceableResource {
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getName() {
-		return Name;
+	public String getLocationName() {
+		return locationName;
 	}
 
 	/**
@@ -182,8 +182,8 @@ public class LocationPolicy extends AnnounceableResource {
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setName(String value) {
-		this.Name = value;
+	public void setLocationName(String value) {
+		this.locationName = value;
 	}
 
 	/**
@@ -213,8 +213,8 @@ public class LocationPolicy extends AnnounceableResource {
          * @return possible object is {@link String }
          * 
          */
-        public String getMethod() {
-                return Method;
+        public String getLocationMethod() {
+                return locationMethod;
         }
 
         /**
@@ -224,8 +224,8 @@ public class LocationPolicy extends AnnounceableResource {
          *            allowed object is {@link String }
          * 
          */
-        public void setMethod(String value) {
-                this.Method = value;
+        public void setLocationMethod(String value) {
+                this.locationMethod = value;
         }
 
 	/**

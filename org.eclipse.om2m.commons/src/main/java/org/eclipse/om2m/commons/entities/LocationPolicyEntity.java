@@ -63,9 +63,11 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     protected String locationName;
 
     // TODO: locationMethod or method?
-    @Column(name = ShortName.LOCATIONSTATUS)
+    @Column(name = ShortName.LOCATIONMETHOD)
     protected String locationMethod;
 
+    @Column(name = ShortName.LOCATIONSTATUS)
+    protected BigInteger locationStatus;
     // database link to parent CSEBase
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CSEBaseEntity.class)
     @JoinTable(
@@ -144,6 +146,15 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
 
     public void setLocationMethod(String locationMethod) {
         this.locationMethod = locationMethod;
+    }
+
+    // get and set location status
+    public String getLocationStatus() {
+        return locationStatus;
+    }
+
+    public void setLocationStatus(String locationStatus) {
+        this.locationStatus = locationStatus;
     }
     
     // get and set parent CSEBase
