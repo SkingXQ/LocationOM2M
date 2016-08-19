@@ -149,11 +149,11 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     }
 
     // get and set location status
-    public String getLocationStatus() {
+    public BigInteger getLocationStatus() {
         return locationStatus;
     }
 
-    public void setLocationStatus(String locationStatus) {
+    public void setLocationStatus(BigInteger locationStatus) {
         this.locationStatus = locationStatus;
     }
     
