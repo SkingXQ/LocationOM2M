@@ -30,8 +30,9 @@ import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.LocationPolicy;
 
-public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, LocationPolicy>{
+public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, LocationPolicy> {
 
 	@Override
 	protected LocationPolicy createResource() {

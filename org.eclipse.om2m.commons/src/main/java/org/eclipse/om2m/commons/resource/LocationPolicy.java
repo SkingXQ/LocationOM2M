@@ -90,9 +90,7 @@ public class LocationPolicy extends AnnounceableResource {
 	@XmlElement(required = true)
 	protected BigInteger locationStatus;
 	protected String locationMethod;
-
-
-
+        protected String locationGroupId;
         
         // TODO: check use or not
         @XmlSchemaType(name = "anyURI")
@@ -147,7 +145,7 @@ public class LocationPolicy extends AnnounceableResource {
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getGroupID() {
+	public String getContainerID() {
 		return locationContainerID;
 	}
 
@@ -158,9 +156,31 @@ public class LocationPolicy extends AnnounceableResource {
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setGroupID(String value) {
+	public void setContainerID(String value) {
 		this.locationContainerID = value;
 	}
+
+        /**
+         * Gets the value of the locationContainerName property.
+         * 
+         * @return possible object is {@link String }
+         * 
+         */
+        public String getContainerName() {
+                return locationContainerName;
+        }
+
+        /**
+         * Sets the value of the locationContainerName property.
+         * 
+         * @param value
+         *            allowed object is {@link String }
+         * 
+         */
+        public void setContainerName(String value) {
+                this.locationContainerName = value;
+        }
+
 
 	/**
 	 * Gets the value of the locationContainerName property.
@@ -224,6 +244,28 @@ public class LocationPolicy extends AnnounceableResource {
         public void setLocationMethod(String value) {
                 this.locationMethod = value;
         }
+
+        /**
+         * Gets the value of the locationGroupId property.
+         * 
+         * @return possible object is {@link String }
+         * 
+         */
+        public String getLocationGroupId() {
+                return locationGroupId;
+        }
+
+        /**
+         * Sets the value of the locationGroupId property.
+         * 
+         * @param value
+         *            allowed object is {@link String }
+         * 
+         */
+        public void setLocationGroupId(String locationGroupId) {
+                this.locationGroupId = locationGroupId;
+        }
+
 
 	/**
 	 * Gets the value of the childResource property.
