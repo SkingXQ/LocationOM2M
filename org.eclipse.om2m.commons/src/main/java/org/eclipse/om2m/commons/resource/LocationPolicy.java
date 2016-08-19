@@ -248,12 +248,13 @@ public class LocationPolicy extends AnnounceableResource {
 	 * 
 	 * 
 	 */
+        /*
 	public List<ChildResourceRef> getChildResource() {
 		if (childResource == null) {
 			childResource = new ArrayList<ChildResourceRef>();
 		}
 		return this.childResource;
-	}
+	}*/
 
 	/**
 	 * Gets the value of the subscription property.
@@ -278,11 +279,12 @@ public class LocationPolicy extends AnnounceableResource {
 	 * 
 	 * 
 	 */
+        /*
 	public List<Subscription> getSubscription() {
 		if (subscription == null) {
 			subscription = new ArrayList<Subscription>();
 		}
 		return this.subscription;
-	}
+	}*/
 
 }
