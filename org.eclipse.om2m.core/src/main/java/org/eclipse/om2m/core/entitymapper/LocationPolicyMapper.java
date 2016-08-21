@@ -21,12 +21,16 @@ package org.eclipse.om2m.core.entitymapper;
 
 import java.math.BigInteger;
 
+
+import org.eclipse.om2m.commons.constants.ResourceType;
+import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.constants.ResultContent;
 import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
 import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
+import org.eclipse.om2m.commons.entities.ContainerEntity;
 import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Subscription;
@@ -47,9 +51,9 @@ public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, Loc
 		resource.setLocationMethod(entity.getLocationMethod());
 		resource.setLocationName(entity.getLocationName());
                 resource.setLocationStatus(entity.getLocationStatus());
-		for(AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()){
+		/*for(AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()){
 			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}
+		}*/
 		if (!entity.getAnnouncedAttribute().isEmpty()) {			
 			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
 		}
@@ -61,7 +65,7 @@ public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, Loc
 	@Override
 	protected void mapChildResourceRef(LocationPolicyEntity entity, LocationPolicy resource) {
                 // adding container refs
-                for (ContainerEntity cnt : entity.getChildContainers()) {
+                for (ContainerEntity cnt : entity.getChildCnt()) {
                         ChildResourceRef child = new ChildResourceRef();
                         child.setResourceName(cnt.getName());
                         child.setType(ResourceType.CONTAINER);
@@ -73,7 +77,7 @@ public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, Loc
 	@Override
 	protected void mapChildResources(LocationPolicyEntity entity, LocationPolicy resource) {
                 // adding container refs
-                for (ContainerEntity cnt : entity.getChildContainers()) {
+                for (ContainerEntity cnt : entity.getChildCnt()) {
                         Container cntRes = new ContainerMapper().mapEntityToResource(cnt, ResultContent.ATTRIBUTES);
                         resource.getContainers().add(cntRes);
                 }
