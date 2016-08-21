@@ -95,7 +95,7 @@ public class LocationPolicy extends AnnounceableResource {
 	protected String locationMethod;
         protected String locationGroupId;
         
-        // TODO: check use or not
+        // TODO: check use or not remove
         @XmlSchemaType(name = "anyURI")
         protected String locationContainerID;
         protected String locationContainerName;
@@ -103,6 +103,8 @@ public class LocationPolicy extends AnnounceableResource {
 
         @XmlElement(name=ShortName.CHILD_RESOURCE)
         protected List<ChildResourceRef> childResource;
+  
+        // TODO: add container resource .compare to csebase
 
 
         /**
