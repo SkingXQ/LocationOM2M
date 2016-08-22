@@ -104,8 +104,39 @@ public class LocationPolicy extends AnnounceableResource {
         @XmlElement(name=ShortName.CHILD_RESOURCE)
         protected List<ChildResourceRef> childResource;
   
+ 
+        protected List<Resource> container;
         // TODO: add container resource .compare to csebase
 
+        /**
+         * Gets the value of the childResource property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list will
+         * be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the childResource property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * 
+         * <pre>
+         * getChildResource().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ChildResourceRef }
+         * 
+         * 
+         */
+        public List<Resource> getContainers() {
+                if (container == null) {
+                        container = new ArrayList<Resource>();
+                }
+                return this.container;
+        }
 
         /**
          * Gets the value of the childResource property.
