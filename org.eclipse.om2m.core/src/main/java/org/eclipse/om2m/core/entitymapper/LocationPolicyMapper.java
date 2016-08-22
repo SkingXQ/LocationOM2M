@@ -35,6 +35,7 @@ import org.eclipse.om2m.commons.resource.ChildResourceRef;
 import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.LocationPolicy;
+import org.eclipse.om2m.commons.resource.Container;
 
 public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, LocationPolicy> {
 
