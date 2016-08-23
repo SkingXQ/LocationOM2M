@@ -72,7 +72,12 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
     protected String locationServer;
     @Column(name = ShortName.LOCATIONSTATUS)
     protected BigInteger locationStatus;
-
+    // TODO: locationName or name  
+    @Column(name = ShortName.LOCATIONNAME)
+    protected String locationName;
+ 
+    @Column(name = ShortName.LOCATIONCNTID)
+    protected String locationContainerID;
 
     // database link to parent CSEBase
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CSEBaseEntity.class)
@@ -90,6 +95,37 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
             inverseJoinColumns = { @JoinColumn(name = DBEntities.SUB_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID) }
             )
     protected List<SubscriptionEntity> subscription;
+
+    /**
+     * @return the location name 
+     */
+    public String getLocationName() {
+        return locationName;
+    }
+
+    /**
+     * @param locationName
+     */
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+
+    /**
+     * @return the location Container id
+     */
+    public String getLocationContainerID() {
+        return locationContainerID;
+    }
+
+    /**
+     * @param locationContainid
+     */
+    public void setLocationContainerID(String locationContainerID) {
+        this.locationContainerID = locationContainerID;
+    }
+
+
 
     /**
      * @return the location target id
