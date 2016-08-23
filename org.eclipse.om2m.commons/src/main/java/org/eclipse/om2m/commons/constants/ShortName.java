@@ -274,6 +274,8 @@ public class ShortName {
     public static final String LOCATIONTARGETID = "locationtargetid";
     /** Short Name for the location server */
     public static final String LOCATIONSERVER = "locationserver";
+    /** Short Name for the location container id */
+    public static final String LOCATIONCNTID = "locationcntid";
 
 	// specific attributes for Group resource
 	/** Short Name for the member type attribute */
