@@ -46,15 +46,11 @@ public class LocationParameterMapper extends EntityMapper<LocationParameterEntit
 
 	@Override
 	protected void mapAttributes(LocationParameterEntity entity, LocationParameter resource) {
-		resource.setLocationSource(entity.getLocationSource());
-		resource.setLocationUpdatePeriod(entity.getLocationUpdatePeriod());
-		resource.setLocationGroupId(entity.getLocationGroupId());
-		resource.setLocationMethod(entity.getLocationMethod());
+		resource.setLocationTargetID(entity.getLocationTargetID());
+		resource.setLocationServer(entity.getLocationServer());
+		resource.setLocationStatus(entity.getLocationStatus());
 		resource.setLocationName(entity.getLocationName());
-                resource.setLocationStatus(entity.getLocationStatus());
-		/*for(AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()){
-			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
-		}*/
+		resource.setLocationContainerID(entity.getLocationContainerID());
 		if (!entity.getAnnouncedAttribute().isEmpty()) {			
 			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());
 		}
@@ -66,22 +62,23 @@ public class LocationParameterMapper extends EntityMapper<LocationParameterEntit
 	@Override
 	protected void mapChildResourceRef(LocationParameterEntity entity, LocationParameter resource) {
                 // adding container refs
-                for (ContainerEntity cnt : entity.getChildCnt()) {
+                for (SubscriptionEntity sub : entity.getSubscriptions()) {
                         ChildResourceRef child = new ChildResourceRef();
-                        child.setResourceName(cnt.getName());
+                        child.setResourceName(sub.getName());
                         child.setType(ResourceType.CONTAINER);
-                        child.setValue(cnt.getResourceID());
+                        child.setValue(sub.getResourceID());
                         resource.getChildResource().add(child);
                 }
 	}
 
 	@Override
 	protected void mapChildResources(LocationParameterEntity entity, LocationParameter resource) {
-                // adding container refs
-                for (ContainerEntity cnt : entity.getChildCnt()) {
-                        Container cntRes = new ContainerMapper().mapEntityToResource(cnt, ResultContent.ATTRIBUTES);
-                        resource.getContainers().add(cntRes);
+                // adding subscription refs
+                for (SubscriptionEntity sub : entity.getSubscriptions()){
+                        Subscription subRes = new SubscriptionMapper().mapEntityToResource(sub, ResultContent.ATTRIBUTES);
+                        resource.getSubscriptions().add(subRes);
                 }
+
 	}
 
 }

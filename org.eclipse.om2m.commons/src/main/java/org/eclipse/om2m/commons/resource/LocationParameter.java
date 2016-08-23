@@ -264,4 +264,34 @@ public class LocationParameter extends AnnounceableResource {
         }
 
 
+        /**
+         * Gets the value of the childResource property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list will
+         * be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the childResource property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * 
+         * <pre>
+         * getChildResource().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link ChildResourceRef }
+         * 
+         * 
+         */
+        public List<Subscription> getSubscriptions() {
+                if (subscription == null) {
+                        subscription = new ArrayList<Subscription>();
+                }
+                return this.subscription;
+        }
+
 }

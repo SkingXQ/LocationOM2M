@@ -130,14 +130,14 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
     /**
      * @return the location target id
      */
-    public String getLocationTargetId() {
+    public String getLocationTargetID() {
         return locationTargetID;
     }
     
     /**
      * @param locationtargetid
      */
-    public void setLocationTargetId(String locationTargetID) {
+    public void setLocationTargetID(String locationTargetID) {
         this.locationTargetID = locationTargetID;
     }
 
@@ -172,18 +172,11 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
     /**
      * @return the subscriptions
      */
-    public List<SubscriptionEntity> getSubscription() {
+    public List<SubscriptionEntity> getSubscriptions() {
         if (this.subscription == null) {
-            this.subscription = new ArrayList<>();
+            this.subscription = new ArrayList<SubscriptionEntity>();
         }
         return subscription;
-    }
-
-    /**
-     * @param subscriptions the subscriptions to set
-     */
-    public void setSubscription(List<SubscriptionEntity> subscription) {
-        this.subscription = subscription;
     }
 
 
