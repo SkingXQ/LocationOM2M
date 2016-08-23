@@ -75,27 +75,6 @@ public class LocationParameter extends AnnounceableResource {
         @XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
         protected List<Subscription> subscription;
 
-        /**
-         * Gets the value of the locationContainer ID property.
-         * 
-         * @return possible object is {@link String }
-         * 
-         */
-        public String getLocationContainerID() {
-                return locationContainerID;
-        }
-
-        /**
-         * Sets the value of the locationContainerID property.
-         * 
-         * @param value
-         *            allowed object is {@link String }
-         * 
-         */
-        public void setLocationContainerID(String value) {
-                this.locationContainerID = value;
-        }
-
 
         /**
          * Gets the value of the locationName property.
