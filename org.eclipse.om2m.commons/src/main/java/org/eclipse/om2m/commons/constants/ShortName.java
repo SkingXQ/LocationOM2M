@@ -66,6 +66,8 @@ public class ShortName {
 	public static final String LOCATIONPOLICY = "lcp";
 	/** Short name for LocationPolicyAnnc resource */
 	public static final String LOCATIONPOLICYA = "lcpA";
+        /** Short name for locationparameter resource */
+        public static final String LOCATIONPARAMETER = "lcpam";
     /** Short name for LocationParameter resource */
     public static final String LOCATIONPARAMETER = "locpara";
 	/** Short name for M2mServiceSubscriptionProfile resource */
