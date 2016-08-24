@@ -38,7 +38,7 @@ public class ResourceType {
 	public static final int EXEC_INSTANCE = 8;
 	public static final int GROUP = 9;
 	public static final int LOCATION_POLICY = 10;
-        public static final int LOCATION_PARAMETER = "24";
+        public static final int LOCATION_PARAMETER = 24;
 	public static final int M2M_SERVICE_SUBSCRIPTION_PROFILE = 11;
 	public static final int MGMT_CMD = 12;
 	public static final int MGMT_OBJ = 13;
