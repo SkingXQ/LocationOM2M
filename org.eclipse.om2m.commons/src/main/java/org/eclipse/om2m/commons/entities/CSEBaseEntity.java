@@ -159,6 +159,25 @@ public class CSEBaseEntity extends ResourceEntity {
 			)
 	protected List<SubscriptionEntity> childSubscriptions;
 
+
+        /** List of ContainerEntities */
+        @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+        @JoinTable(
+                        name=DBEntities.CSEB_GRP_JOIN,
+                        joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+                        inverseJoinColumns={@JoinColumn(name = DBEntities.LOCP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)}
+                        )
+        protected List<LocationPolicyEntity> childLocationPolicy;
+
+        /** List of ContainerEntities */
+        @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+        @JoinTable(
+                        name=DBEntities.CSEB_GRP_JOIN,
+                        joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
+                        inverseJoinColumns={@JoinColumn(name = DBEntities.LOCPA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)}
+                        )
+        protected List<LocationParameterEntity> childLocationParameter;
+
 	/**
 	 * @return the aes
 	 */
@@ -379,6 +398,28 @@ public class CSEBaseEntity extends ResourceEntity {
 		}
 		return childReq;
 	}
+
+
+        /**
+         * @return the list of child location policy
+         */
+        public List<LocationPolicyEntity> getChildLocationPolicy() {
+                if(childLocaionPolicy == null){
+                        childLocationPolicy = new ArrayList<LocationPolicyEntity>();
+                }
+                return childLocationPolicy;
+        }
+
+        /**
+         * @return the list of child location parameter
+         */
+        public List<LocationParameterEntity> getChildLocationParameter() {
+                if(childLocaionParameter == null){
+                        childLocationParameter = new ArrayList<LocationParameterEntity>();
+                }
+                return childLocationParameter;
+        }
+
 
 	/**
 	 * @param childReq
