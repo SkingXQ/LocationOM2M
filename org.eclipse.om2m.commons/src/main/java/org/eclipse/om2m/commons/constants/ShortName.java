@@ -69,7 +69,7 @@ public class ShortName {
         /** Short name for locationparameter resource */
         public static final String LOCATIONPARAMETER = "lcpam";
     /** Short name for LocationParameter resource */
-    public static final String LOCATIONPARAMETER = "locpara";
+   // public static final String LOCATIONPARAMETER = "locpara";
 	/** Short name for M2mServiceSubscriptionProfile resource */
 	public static final String MSSP = "mssp";
 	/** Short name for MgmtCmd resource */
