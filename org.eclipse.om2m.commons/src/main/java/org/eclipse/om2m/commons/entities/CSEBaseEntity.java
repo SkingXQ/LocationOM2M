@@ -163,7 +163,7 @@ public class CSEBaseEntity extends ResourceEntity {
         /** List of ContainerEntities */
         @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
         @JoinTable(
-                        name=DBEntities.CSEB_GRP_JOIN,
+                        name=DBEntities.CSEB_LOCP_JOIN,
                         joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
                         inverseJoinColumns={@JoinColumn(name = DBEntities.LOCP_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)}
                         )
@@ -172,7 +172,7 @@ public class CSEBaseEntity extends ResourceEntity {
         /** List of ContainerEntities */
         @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
         @JoinTable(
-                        name=DBEntities.CSEB_GRP_JOIN,
+                        name=DBEntities.CSEB_LOCPA_JOIN,
                         joinColumns={@JoinColumn(name=DBEntities.CSEB_JOIN_ID, referencedColumnName=ShortName.RESOURCE_ID)},
                         inverseJoinColumns={@JoinColumn(name = DBEntities.LOCPA_JOIN_ID, referencedColumnName = ShortName.RESOURCE_ID)}
                         )
@@ -404,20 +404,19 @@ public class CSEBaseEntity extends ResourceEntity {
          * @return the list of child location policy
          */
         public List<LocationPolicyEntity> getChildLocationPolicy() {
-                if(childLocaionPolicy == null){
-                        childLocationPolicy = new ArrayList<LocationPolicyEntity>();
+                if(this.childLocationPolicy == null){
+                        this.childLocationPolicy = new ArrayList<LocationPolicyEntity>();
                 }
-                return childLocationPolicy;
+                return this.childLocationPolicy;
         }
-
         /**
          * @return the list of child location parameter
          */
         public List<LocationParameterEntity> getChildLocationParameter() {
-                if(childLocaionParameter == null){
-                        childLocationParameter = new ArrayList<LocationParameterEntity>();
+                if(this.childLocationParameter == null){
+                        this.childLocationParameter = new ArrayList<LocationParameterEntity>();
                 }
-                return childLocationParameter;
+                return this.childLocationParameter;
         }
 
 
