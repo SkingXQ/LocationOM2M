@@ -126,6 +126,8 @@ public class CSEBase extends Resource {
 			@XmlElement(name = ShortName.CNT, namespace = "http://www.onem2m.org/xml/protocols", type = Container.class),
 			@XmlElement(name = ShortName.GROUP, namespace = "http://www.onem2m.org/xml/protocols", type = Group.class),
 			@XmlElement(name = ShortName.ACP, namespace = "http://www.onem2m.org/xml/protocols", type = AccessControlPolicy.class),
+                        @XmlElement(name = ShortName.LOCATIONPOLICY, namespace = "http://www.onem2m.org/xml/protocols", type = LocationPolicy.class),
+                        @XmlElement(name = ShortName.LOCATIONPARAMETER, namespace = "http://www.onem2m.org/xml/protocols", type = LocationParameter.class),
 			@XmlElement(name = ShortName.SUB, namespace = "http://www.onem2m.org/xml/protocols", type = Subscription.class),
 			@XmlElement(name = "mgmtCmd", namespace = "http://www.onem2m.org/xml/protocols", type = MgmtCmd.class),
 			@XmlElement(name = "locationPolicy", namespace = "http://www.onem2m.org/xml/protocols", type = LocationPolicy.class),
