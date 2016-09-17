@@ -99,8 +99,6 @@ public class Router implements CseService {
 				}
 			}
 
-                        // Testing 1 
-                        LOGGER.info("content Type " + request.getRequestContentType());
 			// Check if the data type has been set
 			if (request.getRequestContentType() == null){
 				request.setRequestContentType(MimeMediaType.XML);
