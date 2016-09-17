@@ -81,7 +81,6 @@ public class Activator implements BundleActivator {
 				DataMapperService dataMapper = (DataMapperService) this.context.getService(reference);
 				LOGGER.info("Added Data Mapper Service: " + dataMapper.getServiceDataType());
 				DataMapperSelector.getDataMapperList().put(dataMapper.getServiceDataType(), dataMapper);
-                                LOGGER.info("tesing" + dataMapper.getServiceDataType());
 				return dataMapper;
 			}
 
@@ -99,6 +98,9 @@ public class Activator implements BundleActivator {
                 LocationPolicy t = test();
                 String res = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t);
                 LOGGER.info(res);
+                LocationParameter t1 = test1();
+                String res1 = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t1);
+                LOGGER.info(res1);
                 //**********************************
                  
                 
@@ -205,5 +207,12 @@ public class Activator implements BundleActivator {
             t.setLocationStatus(BigInteger.valueOf(10));
             return t;
         }
+ 
+       public LocationParameter test1() throws JAXBException {
+            LocationParameter t = new LocationParameter();
+            t.setLocationTargetID("hello");
+            t.setLocationName("xiaoqing");
+            return t;
+       }
 
 }
