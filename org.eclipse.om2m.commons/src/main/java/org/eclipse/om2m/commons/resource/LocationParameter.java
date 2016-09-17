@@ -69,7 +69,7 @@ public class LocationParameter extends AnnounceableResource {
         // remove the container part
         @XmlSchemaType(name = "anyURI")
         protected String locationContainerID;
-        @XlmElement(name  = "locationame", required = true)
+        @XmlElement(name  = "locationame", required = true)
         protected String locationName;
         @XmlElement(required = true)
         protected BigInteger locationStatus;

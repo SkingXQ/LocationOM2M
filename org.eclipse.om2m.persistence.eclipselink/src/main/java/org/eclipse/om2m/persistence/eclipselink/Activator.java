@@ -26,6 +26,7 @@ import org.eclipse.om2m.persistence.service.DBService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+
 public class Activator implements BundleActivator {
 
 	/** Logger */
@@ -71,5 +72,5 @@ public class Activator implements BundleActivator {
 		// DBServiceJPAImpl.getInstance().close();
 		LOGGER.info("Persistence JPA plugin stopped");
 	}
-
+ 
 }

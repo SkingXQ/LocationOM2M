@@ -1,23 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2013-2016 LAAS-CNRS (www.laas.fr)
- * 7 Colonel Roche 31077 Toulouse - France
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Initial Contributors:
- *     Thierry Monteil : Project manager, technical co-manager
- *     Mahdi Ben Alaya : Technical co-manager
- *     Samir Medjiah : Technical co-manager
- *     Khalil Drira : Strategy expert
- *     Guillaume Garzone : Developer
- *     François Aïssaoui : Developer
- *
- * New contributors :
- *******************************************************************************/
+// Author : sking
+
 package org.eclipse.om2m.core.controller;
+
 
 import java.util.List;
 
@@ -37,6 +21,7 @@ import org.eclipse.om2m.commons.entities.GroupEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
@@ -61,449 +46,125 @@ import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 
+
 /**
- * Controller for group
+ * Controller for Location Parameter
  *
  */
 public class LocationParameterController extends Controller {
 
-	/*
-	 * 							Req
-	 * @resourceName			NP
-	 * resourceType				NP
-	 * resourceID				NP
-	 * parentID					NP
-	 * accessControlPolicyIDs	O
-	 * creationTime				NP
-	 * expirationTime			O
-	 * lastModifiedTime			NP
-	 * labels					O
-	 * announceTo				O
-	 * announcedAttribute		O
-	 * creator					O
-	 * memberType				M
-	 * currentNrOdMembers		NP
-	 * maxNrOfMembers			M
-	 * memberID					M
-	 * membersACPIDs			O
-	 * memberTypeValidated		NP
-	 * consistencyStrategy		O
-	 * groupName				O
-	 */
-	@Override
-	public ResponsePrimitive doCreate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
+    @Override
+    public ResponsePrimitive doCreate(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
+        DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
+        if (dao == null) {
+            throw new ResourceNotFoundException("Cannot find parent resource");
+        }
+    
+        ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
+        
+        if (parentEntity == null) {
+            throw new ResourceNotFoundException("Can't find parent resource");
+        }        
+        // request is create in the cse base  so parent is cse base not group entity
+        
+        LocationParameter locationParameter = null;
+        try {
+            if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
+                locationParameter = (LocationParameter) request.getContent();
+            } else {
+                locationParameter = (LocationParameter) DataMapperSelector.getDataMapperList().
+                                 get(request.getRequestContentType()).stringToObj((String)request.getContent());
+            }
+        } catch (ClassCastException e){
+            throw new BadRequestException("Incorrect resource representation in content", e);
+        }       
+        if (locationParameter == null){
+            throw new BadRequestException("Error in provided content");
+        }       
+        
+        LocationParameterEntity locationParameterEntity = new LocationParameterEntity();
 
-		// Get the DAO of the parent
-		DAO<ResourceEntity> dao = (DAO<ResourceEntity>) Patterns.getDAO(request.getTargetId(), dbs);
-		if (dao == null){
-			throw new ResourceNotFoundException("Cannot find parent resource");
-		}
+        ControllerUtil.CreateUtil.fillEntityFromAnnounceableResource(locationParameter, locationParameterEntity);
 
-		// Get the parent entity
-		ResourceEntity parentEntity = (ResourceEntity) dao.find(transaction, request.getTargetId());
-		// Check the parent existence
-		if (parentEntity == null){
-			throw new ResourceNotFoundException("Cannot find parent resource");
-		}
+        String generatedId = generateId();
+        locationParameterEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.LOCATIONPARAMETER + Constants.PREFIX_SEPERATOR + generatedId);
+        locationParameterEntity.setCreationTime(DateUtil.now());
+        locationParameterEntity.setLastModifiedTime(DateUtil.now());
+        locationParameterEntity.setParentID(parentEntity.getResourceID());
+        locationParameterEntity.setResourceType(ResourceType.LOCATION_PARAMETER);
 
-		// Get lists to change in the method corresponding to specific object
-		List<AccessControlPolicyEntity> acpsToCheck = null;
-		List<GroupEntity> childGroups = null;
-		List<SubscriptionEntity> subscriptions = null;
+        if (locationParameter.getName() != null){
+            if (!Patterns.checkResourceName(locationParameter.getName())){
+                throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+            }
+            locationParameterEntity.setName(locationParameter.getName());
+        } else
+        if(request.getName() != null){
+            if (!Patterns.checkResourceName(request.getName())){
+                throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
+            }
+            locationParameterEntity.setName(request.getName());
+        } else {
+            locationParameterEntity.setName(ShortName.LOCATIONPARAMETER + "_" + generatedId);
+        }
+        locationParameterEntity.setHierarchicalURI(parentEntity.getHierarchicalURI()+ "/" + locationParameterEntity.getName());
 
-		// Distinguish parents
-		// Case of CSEBase
-		if(parentEntity.getResourceType().intValue() == (ResourceType.CSE_BASE)){
-			CSEBaseEntity cseBase = (CSEBaseEntity) parentEntity;
-			acpsToCheck = cseBase.getAccessControlPolicies();
-			childGroups = cseBase.getGroups();
-			subscriptions = cseBase.getSubscriptions();
-		}
 
-		if(parentEntity.getResourceType().intValue() == (ResourceType.AE)){
-			AeEntity ae = (AeEntity) parentEntity;
-			acpsToCheck = ae.getAccessControlPolicies();
-			childGroups = ae.getChildGroups();
-			subscriptions = ae.getSubscriptions();
-		}
+        if (!UriMapper.addNewUri(locationParameterEntity.getHierarchicalURI(), locationParameterEntity.getResourceID(), ResourceType.LOCATION_PARAMETER)){
+            throw new ConflictException("Name already present in the parent collection.");
+        }
 
-		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE)){
-			RemoteCSEEntity remoteCSE = (RemoteCSEEntity) parentEntity;
-			acpsToCheck = remoteCSE.getAccessControlPolicies();
-			childGroups = remoteCSE.getChildGrps();
-			subscriptions = remoteCSE.getSubscriptions();
-		}
+        dbs.getDAOFactory().getLocationParameterDAO().create(transaction, locationParameterEntity);
 
-		if(parentEntity.getResourceType().intValue() == (ResourceType.REMOTE_CSE_ANNC)){
-			throw new NotImplementedException("remote cse announcer not implemented");
-		}
+        // Get the managed object from db
+        LocationParameterEntity locationParameterDB = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, locationParameterEntity.getResourceID());
 
-		if(parentEntity.getResourceType().intValue() == (ResourceType.AE_ANNC)){
-			// TODO AE_ANNC group parent
-			throw new NotImplementedException("ae annc not implemented");
-		}
+        dao.update(transaction, parentEntity);
+        transaction.commit();
 
-		// Check access control policy of the originator
-		checkACP(acpsToCheck, request.getFrom(), Operation.CREATE);
+        response.setResponseStatusCode(ResponseStatusCode.CREATED);
+        setLocationAndCreationContent(request, response, locationParameterDB);
+        return response;
 
-		// Check if content is present
-		if (request.getContent() == null){
-			throw new BadRequestException("A content is requiered for Group creation");
-		}
 
-		Group group = null;
-		try {
-			if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
-				group = (Group) request.getContent();
-			} else {
-				group = (Group) DataMapperSelector.getDataMapperList().
-						get(request.getRequestContentType()).stringToObj((String)request.getContent());
-			}
-		} catch (ClassCastException e){
-			throw new BadRequestException("Incorrect resource representation in content", e);
-		}
-		if (group == null){
-			throw new BadRequestException("Error in provided content");
-		}
+    }
 
-		GroupEntity groupEntity = new GroupEntity();
-		// Check attributes
-		// @resourceName			NP
-		// resourceType				NP
-		// resourceID				NP
-		// parentID					NP
-		// creationTime				NP
-		// lastModifiedTime			NP
-		// expirationTime			O
-		// labels					O
-		// announceTo				O
-		// announcedAttribute		O
-		// Creating the corresponding entity
-		ControllerUtil.CreateUtil.fillEntityFromAnnounceableResource(group, groupEntity);
 
-		// currentNrOdMembers		NP
-		if (group.getCurrentNrOfMembers() != null){
-			throw new NotPermittedAttrException("CurrentNrOfMembers is Not Permitted");
-		}
-		// memberTypeValidated		NP
-		if (group.getMemberTypeValidated() != null){
-			throw new NotPermittedAttrException("MemberTypeValidated is Not Permitted");
-		}
+    @Override
+    public ResponsePrimitive doRetrieve(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
+        
+        LocationParameterEntity locationParameterEntity = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, request.getTargetId());
 
-		// maxNrOfMembers			M
-		if(group.getMaxNrOfMembers() == null){
-			throw new BadRequestException("MaxNrOfMembers is Mandatory");
-		}
-		groupEntity.setMaxNrOfMembers(group.getMaxNrOfMembers());
+        if (locationParameterEntity == null){
+            throw new ResourceNotFoundException("Resource not found");
+        }   
+        // TODO: check
+        // checkACP(LocationPolicyEntity.getAccessControlPolicies(), request.getFrom(), 
+        //        Operation.RETRIEVE);
+    
 
-		// memberType				O
-		if(group.getMemberType() == null){
-			groupEntity.setMemberType(MemberType.MIXED);
-		} else {
-			groupEntity.setMemberType(group.getMemberType());			
-		}
-		// memberID					M
-		if (group.getMemberIDs().isEmpty()){
-			throw new BadRequestException("MemberIDs is Mandatory");
-		}
-		if(group.getMemberIDs().size() > group.getMaxNrOfMembers().intValue()){
-			throw new Om2mException("Max number of member exceeded", 
-					ResponseStatusCode.MAX_NUMBER_OF_MEMBER_EXCEEDED);
-		}
-		groupEntity.getMemberIDs().addAll(group.getMemberIDs());
+        // Create the object used to create the representation of the resource TODO
+        LocationParameter locationParameter = EntityMapperFactory.getLocationParameterMapper().mapEntityToResource(locationParameterEntity, request);
+        response.setContent(locationParameter);
 
-		// consistencyStrategy		O
-		if (group.getConsistencyStrategy() != null){
-			groupEntity.setConsistencyStrategy(group.getConsistencyStrategy());
-		} else {
-			groupEntity.setConsistencyStrategy(ConsistencyStrategy.ABANDON_MEMBER);
-		}
+        response.setResponseStatusCode(ResponseStatusCode.OK);
 
-		// accessControlPolicyIDs	O
-		if(!group.getAccessControlPolicyIDs().isEmpty()){
-			groupEntity.setAccessControlPolicies(
-					ControllerUtil.buildAcpEntityList(group.getAccessControlPolicyIDs(), transaction));
+        return response;
 
-		} else {
-			groupEntity.getAccessControlPolicies().addAll(acpsToCheck);
-		}
-		// creator					O
-		if(group.getCreator() != null){
-			groupEntity.setCreator(group.getCreator());
-		}
-		// membersACPIDs			O
-		if (!group.getMembersAccessControlPolicyIDs().isEmpty()){
-			groupEntity.getMemberAcpIds().addAll(group.getMembersAccessControlPolicyIDs());
-		}
-		// groupName				O
-		if (group.getGroupName() != null){
-			groupEntity.setGroupName(group.getGroupName());
-		}
+	}
+     
+    // TODO
 
-		String generatedId = generateId();
-		groupEntity.setResourceID("/" + Constants.CSE_ID + "/" + ShortName.GROUP + Constants.PREFIX_SEPERATOR + generatedId);;
-		groupEntity.setCreationTime(DateUtil.now());
-		groupEntity.setLastModifiedTime(DateUtil.now());
-		groupEntity.setParentID(parentEntity.getResourceID());
-		groupEntity.setResourceType(ResourceType.GROUP);
-		
-		if (group.getName() != null){
-			if (!Patterns.checkResourceName(group.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			groupEntity.setName(group.getName());
-		} else 
-		if(request.getName() != null){
-			if (!Patterns.checkResourceName(request.getName())){
-				throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
-			}
-			groupEntity.setName(request.getName());
-		} else {
-			groupEntity.setName(ShortName.GROUP + "_" + generatedId);
-		}
-		groupEntity.setHierarchicalURI(parentEntity.getHierarchicalURI()+ "/" + groupEntity.getName());
+    @Override
+    public ResponsePrimitive doUpdate(RequestPrimitive request) {
 
-		// Validate the memberType of memberIDs
-		GroupUtil.validateGroupMember(groupEntity);
-
-		if (!UriMapper.addNewUri(groupEntity.getHierarchicalURI(), groupEntity.getResourceID(), ResourceType.GROUP)){
-			throw new ConflictException("Name already present in the parent collection.");
-		}
-
-		dbs.getDAOFactory().getGroupDAO().create(transaction, groupEntity);
-
-		// Get the managed object from db
-		GroupEntity groupDB = dbs.getDAOFactory().getGroupDAO().find(transaction, groupEntity.getResourceID());
-
-		childGroups.add(groupDB);
-		dao.update(transaction, parentEntity);
-		transaction.commit();
-
-		Notifier.notify(subscriptions, groupDB, ResourceStatus.CHILD_CREATED);
-
-		response.setResponseStatusCode(ResponseStatusCode.CREATED);
-		setLocationAndCreationContent(request, response, groupDB);
-		return response;
+            return null;
 	}
 
-	@Override
-	public ResponsePrimitive doRetrieve(RequestPrimitive request) {
-		/*
-		 * Generic retrieve procedure
-		 */
-		ResponsePrimitive response = new ResponsePrimitive(request);
-
-		// Check the existence of the resource
-		GroupEntity groupEntity = dbs.getDAOFactory().getGroupDAO().
-				find(transaction, request.getTargetId());
-		if (groupEntity == null){
-			throw new ResourceNotFoundException("Resource not found");
-		}
-
-		checkACP(groupEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.RETRIEVE);
-		
-
-		// Create the object used to create the representation of the resource
-		Group group = EntityMapperFactory.getGroupMapper().mapEntityToResource(groupEntity, request);
-		response.setContent(group);
-
-		response.setResponseStatusCode(ResponseStatusCode.OK);
-
-		return response;
+    @Override
+    public ResponsePrimitive doDelete(RequestPrimitive request) {
+            return null;
 	}
-
-	/*
-	 * 							Req
-	 * @resourceName			NP
-	 * resourceType				NP
-	 * resourceID				NP
-	 * parentID					NP
-	 * accessControlPolicyIDs	NP
-	 * creationTime				NP
-	 * expirationTime			O
-	 * lastModifiedTime			NP
-	 * labels					O
-	 * announceTo				O
-	 * announcedAttribute		O
-	 * creator					NP
-	 * memberType				O
-	 * currentNrOdMembers		NP
-	 * maxNrOfMembers			O
-	 * memberID					O
-	 * membersACPIDs			O
-	 * memberTypeValidated		NP
-	 * consistencyStrategy		NP
-	 * groupName				O
-	 */
-	@Override
-	public ResponsePrimitive doUpdate(RequestPrimitive request) {
-		ResponsePrimitive response = new ResponsePrimitive(request);
-
-		DBService dbs = PersistenceService.getInstance().getDbService();
-		DBTransaction transaction = dbs.getDbTransaction();
-		transaction.open();
-
-		// Retrieve the resource from database
-		GroupEntity groupEntity = dbs.getDAOFactory()
-				.getGroupDAO().find(transaction, request.getTargetId());
-		if (groupEntity == null){
-			throw new ResourceNotFoundException("Resource not found");
-		}
-
-		checkACP(groupEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.UPDATE);
-
-		// Check if content is present
-		if (request.getContent() == null){
-			throw new BadRequestException("A content is requiered for Group update");
-		}
-
-		Group group = null;
-		try {
-			if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
-				group = (Group) request.getContent();
-			} else {
-				group = (Group) DataMapperSelector.getDataMapperList().
-						get(request.getRequestContentType()).stringToObj((String)request.getContent());
-			}
-		} catch (ClassCastException e){
-			throw new BadRequestException("Incorrect resource representation in content", e);
-		}
-		if (group == null){
-			throw new BadRequestException("Error in provided content");
-		}
-
-		// Check attributes
-
-		// NP Attributes are ignores
-		// @resourceName			NP
-		// resourceType				NP
-		// resourceID				NP
-		// parentID					NP
-		// accessControlPolicyIDs	NP
-		// creationTime				NP
-		// lastModifiedTime			NP
-		UpdateUtil.checkNotPermittedParameters(group);
-		// creator					NP
-		if(group.getCreator() != null){
-			throw new BadRequestException("Creator is NP");
-		}
-		// currentNrOdMembers		NP
-		if(group.getCurrentNrOfMembers() != null){
-			throw new BadRequestException("CurrentNrOfMembers is NP");
-		}
-		// memberTypeValidated		NP
-		if(group.getMemberTypeValidated() != null){
-			throw new BadRequestException("MemberTypeValidated is NP");
-		}
-		// consistencyStrategy		NP
-		if(group.getConsistencyStrategy() != null){
-			throw new BadRequestException("ConsistencyStrategy is NP");
-		}
-
-		Group modifiedAttributes = new Group();
-		
-		// expirationTime			O
-		if (group.getExpirationTime() != null){
-			groupEntity.setExpirationTime(group.getExpirationTime());
-			modifiedAttributes.setExpirationTime(group.getExpirationTime());
-		}
-		// labels					O
-		if(!group.getLabels().isEmpty()){
-			groupEntity.getLabelsEntities().clear();
-			groupEntity.setLabelsEntitiesFromSring(group.getLabels());
-			modifiedAttributes.getLabels().addAll(group.getLabels());
-		}
-		// announceTo				O
-		if(!group.getAnnounceTo().isEmpty()){
-			// TODO Announcement in group update
-			groupEntity.getAnnounceTo().clear();
-			groupEntity.getAnnounceTo().addAll(group.getAnnounceTo());
-			modifiedAttributes.getAnnounceTo().addAll(group.getAnnounceTo());
-		}
-		// announcedAttribute		O
-		if(!group.getAnnouncedAttribute().isEmpty()){
-			groupEntity.getAnnouncedAttribute().clear();
-			groupEntity.getAnnouncedAttribute().addAll(group.getAnnouncedAttribute());
-			modifiedAttributes.getAnnouncedAttribute().addAll(group.getAnnouncedAttribute());
-		}
-		// memberType				O
-		if(group.getMemberType() != null){
-			groupEntity.setMemberType(group.getMemberType());
-			modifiedAttributes.setMemberType(group.getMemberType());
-		}
-		// maxNrOfMembers			O
-		if(group.getMaxNrOfMembers() != null){
-			groupEntity.setMaxNrOfMembers(group.getMaxNrOfMembers());
-			modifiedAttributes.setMaxNrOfMembers(group.getMaxNrOfMembers());
-		}
-		// memberID					O
-		if(!group.getMemberIDs().isEmpty()){
-			groupEntity.getMemberIDs().clear();
-			groupEntity.getMemberIDs().addAll(group.getMemberIDs());
-			modifiedAttributes.getMemberIDs().addAll(group.getMemberIDs());
-		}
-		// membersACPIDs			O
-		if(!group.getMembersAccessControlPolicyIDs().isEmpty()){
-			for(AccessControlPolicyEntity acpe : groupEntity.getAccessControlPolicies()){
-				checkSelfACP(acpe, request.getFrom(), Operation.UPDATE);
-			}
-			groupEntity.getMemberAcpIds().clear();
-			groupEntity.getMemberAcpIds().addAll(group.getMembersAccessControlPolicyIDs());
-			modifiedAttributes.getMembersAccessControlPolicyIDs().addAll(group.getMembersAccessControlPolicyIDs());
-		}
-		// groupName				O
-		if(group.getGroupName() != null){
-			groupEntity.setGroupName(group.getGroupName());
-			modifiedAttributes.setGroupName(group.getGroupName());
-		}
-
-		// Last Time Modified update
-		groupEntity.setLastModifiedTime(DateUtil.now());
-		modifiedAttributes.setLastModifiedTime(groupEntity.getLastModifiedTime());
-		response.setContent(modifiedAttributes);
-		
-		GroupUtil.validateGroupMember(groupEntity);
-		
-		// Update the resource in database
-		dbs.getDAOFactory().getGroupDAO().update(transaction, groupEntity);
-		transaction.commit();
-		
-		Notifier.notify(groupEntity.getSubscriptions(), groupEntity, ResourceStatus.UPDATED);
-		response.setResponseStatusCode(ResponseStatusCode.UPDATED);
-		return response;
-	}
-
-	@Override
-	public ResponsePrimitive doDelete(RequestPrimitive request) {
-		/*
-		 * Generic delete procedure
-		 */
-		ResponsePrimitive response = new ResponsePrimitive(request);
-
-		// Retrieve the resource from database
-		GroupEntity groupEntity = dbs.getDAOFactory()
-				.getGroupDAO().find(transaction, request.getTargetId());
-		if (groupEntity == null){
-			throw new ResourceNotFoundException("Resource not found");
-		}
-
-		checkACP(groupEntity.getAccessControlPolicies(), request.getFrom(), 
-				Operation.DELETE);
-		
-		UriMapper.deleteUri(groupEntity.getHierarchicalURI());
-		Notifier.notifyDeletion(groupEntity.getSubscriptions(), groupEntity);
-
-		// Delete the resource
-		dbs.getDAOFactory().getGroupDAO().delete(transaction, groupEntity);
-
-		// Commit the transaction
-		transaction.commit();
-
-		response.setResponseStatusCode(ResponseStatusCode.DELETED);
-		return response;
-	}
-
 }

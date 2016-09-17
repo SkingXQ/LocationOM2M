@@ -49,6 +49,8 @@
 		<class>org.eclipse.om2m.commons.entities.ScheduleEntity</class>
 		<class>org.eclipse.om2m.commons.entities.SubscriptionEntity</class>
 		<class>org.eclipse.om2m.commons.entities.UriMapperEntity</class>
+                <class>org.eclipse.om2m.commons.entities.LocationParameterEntity</class>
+                <class>org.eclipse.om2m.commons.entities.LocationPolicyEntity</class>
 
 		<properties>
 			<!-- Actions performed at the start of the platform -->

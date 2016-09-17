@@ -52,7 +52,7 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     protected BigInteger locationSource;
     
     @Column(name = ShortName.LOCATIONUPDATEPERIOD)
-    protected Duration locationUpdatePeriod;
+    protected String locationUpdatePeriod;
    
     // TODO: check locationGroupId or gourp id as resource ?
     @Column(name = ShortName.LOCATIONGROUPID)
@@ -113,11 +113,12 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     }
 
     // get and set location update period
-    public Duration getLocationUpdatePeriod() {
-        return locationUpdatePeriod;
+    public String getLocationUpdatePeriod() {
+        return this.locationUpdatePeriod;
+        //return locationUpdatePeriod;
     }
 
-    public void setLocationUpdatePeriod(Duration locationUpdatePeriod) {
+    public void setLocationUpdatePeriod(String locationUpdatePeriod) {
         this.locationUpdatePeriod = locationUpdatePeriod;
     }
     

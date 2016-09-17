@@ -33,6 +33,8 @@ import org.eclipse.om2m.commons.entities.NodeEntity;
 import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
+import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.CSEBase;
@@ -42,6 +44,8 @@ import org.eclipse.om2m.commons.resource.Group;
 import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.Subscription;
+import org.eclipse.om2m.commons.resource.LocationPolicy;
+import org.eclipse.om2m.commons.resource.LocationParameter;
 
 public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 
@@ -142,6 +146,23 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			ch.setValue(nod.getResourceID());
 			cseBaseResource.getChildResource().add(ch);
 		}
+                // adding location policy refs
+                for (LocationPolicyEntity loc : cseBaseEntity.getChildLocationPolicy()){
+                        ChildResourceRef ch = new ChildResourceRef();
+                        ch.setResourceName(loc.getName());
+                        ch.setType(ResourceType.LOCATION_POLICY);
+                        ch.setValue(loc.getResourceID());
+                        cseBaseResource.getChildResource().add(ch);
+                }
+                // adding location parameter refs
+                for (LocationParameterEntity loca : cseBaseEntity.getChildLocationParameter()){
+                        ChildResourceRef ch = new ChildResourceRef();
+                        ch.setResourceName(loca.getName());
+                        ch.setType(ResourceType.LOCATION_PARAMETER);
+                        ch.setValue(loca.getResourceID());
+                        cseBaseResource.getChildResource().add(ch);
+                }
+
 	}
 
 
@@ -182,6 +203,20 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 			Request reqResource = new RequestMapper().mapEntityToResource(req, ResultContent.ATTRIBUTES);
 			resource.getRemoteCSEOrNodeOrAE().add(reqResource);
 		}
+
+                // adding location policy refs
+                for(LocationPolicyEntity lop : entity.getChildLocationPolicy()){
+                        LocationPolicy reqResource = new LocationPolicyMapper().mapEntityToResource(lop, ResultContent.ATTRIBUTES);
+                        resource.getRemoteCSEOrNodeOrAE().add(reqResource);
+                }
+
+                // adding location parameter refs
+                for(LocationParameterEntity lopa : entity.getChildLocationParameter()){
+                        LocationParameter reqResource = new LocationParameterMapper().mapEntityToResource(lopa, ResultContent.ATTRIBUTES);
+                        resource.getRemoteCSEOrNodeOrAE().add(reqResource);
+                }
+
+
 	}
 
 }

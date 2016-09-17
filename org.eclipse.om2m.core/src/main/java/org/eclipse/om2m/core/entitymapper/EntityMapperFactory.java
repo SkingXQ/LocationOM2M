@@ -35,6 +35,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.RequestEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
 import org.eclipse.om2m.commons.resource.AE;
 import org.eclipse.om2m.commons.resource.AccessControlPolicy;
 import org.eclipse.om2m.commons.resource.AreaNwkDeviceInfo;
@@ -49,6 +50,7 @@ import org.eclipse.om2m.commons.resource.RemoteCSE;
 import org.eclipse.om2m.commons.resource.Request;
 import org.eclipse.om2m.commons.resource.Subscription;
 import org.eclipse.om2m.commons.resource.LocationPolicy;
+import org.eclipse.om2m.commons.resource.LocationParameter;
 
 /**
  * Entity Mapper Factory
@@ -116,7 +118,12 @@ public class EntityMapperFactory {
         public static EntityMapper<LocationPolicyEntity, LocationPolicy> getLocationPolicyMapper() {
                 return new LocationPolicyMapper();
         }
-    
+
+        /** Get the Location Parameter mapper */
+        public static EntityMapper<LocationParameterEntity, LocationParameter> getLocationParameterMapper() {
+                return new LocationParameterMapper();
+        }
+
         /** Get the Location Parameter mapper */
         //public static EntityMapper<LocationParameterEntity, LocationParameter> getLocationParameterMapper() {
         //        return new LocationParameterMapper();

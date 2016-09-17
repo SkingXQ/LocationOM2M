@@ -39,6 +39,19 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
+
+// ************************************
+import org.eclipse.om2m.commons.resource.LocationPolicy;
+import org.eclipse.om2m.commons.resource.LocationParameter;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.io.*;
+// ************************************
+
+
 /**
  * Manages the starting and stopping of the bundle.
  */
@@ -68,6 +81,7 @@ public class Activator implements BundleActivator {
 				DataMapperService dataMapper = (DataMapperService) this.context.getService(reference);
 				LOGGER.info("Added Data Mapper Service: " + dataMapper.getServiceDataType());
 				DataMapperSelector.getDataMapperList().put(dataMapper.getServiceDataType(), dataMapper);
+                                LOGGER.info("tesing" + dataMapper.getServiceDataType());
 				return dataMapper;
 			}
 
@@ -81,7 +95,13 @@ public class Activator implements BundleActivator {
 
 		} ;
 		dataMapperServiceTracker.open();
-
+                //********************************** 
+                LocationPolicy t = test();
+                String res = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t);
+                LOGGER.info(res);
+                //**********************************
+                 
+                
 		// track the persistence database service
 		databaseServiceTracker = new ServiceTracker<Object, Object>(bundleContext, DBService.class.getName(), null){
 
@@ -171,5 +191,19 @@ public class Activator implements BundleActivator {
 	protected static BundleContext getContext(){
 		return context;
 	}
+
+        /**
+         * Testing the xml 
+         */
+        public LocationPolicy test() throws JAXBException {
+            LocationPolicy t = new LocationPolicy();
+            t.setLocationSource(BigInteger.valueOf(10));
+            String test = "hello world";
+            t.setLocationUpdatePeriod(test);
+            t.setContainerID(test);
+            t.setLocationName(test);
+            t.setLocationStatus(BigInteger.valueOf(10));
+            return t;
+        }
 
 }
