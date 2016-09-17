@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.Duration;
@@ -79,32 +80,38 @@ import org.eclipse.om2m.commons.constants.ShortName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "locationSource", "locationUpdatePeriod",
-		"groupID", "LocationName", "locationStatus", "Method", 
-                "childResource", "subscription" })
+		"locationName", "locationStatus", "locationMethod", 
+                "locationGroupId", "childResource", "locationContainerID",
+                "locationContainerName", "container"})
 @XmlRootElement(name = "locationPolicy")
 public class LocationPolicy extends AnnounceableResource {
 
-	@XmlElement(required = true)
+	@XmlElement(name = "locationsource", required = true)
 	protected BigInteger locationSource;
-	protected Duration locationUpdatePeriod;
-	@XmlSchemaType(name = "anyURI")
-	protected String groupID;
+        @XmlElement(name = "locationupdateperiod")
+	protected String locationUpdatePeriod;
+        @XmlElement(name = "locationame", required = true)
 	protected String locationName;
-	@XmlElement(required = true)
+	@XmlElement(name = "locationstatus", required = true)
 	protected BigInteger locationStatus;
+        @XmlElement(name = "locationmethod")
 	protected String locationMethod;
+
+        @XmlSchemaType(name = "anyURI")
         protected String locationGroupId;
         
         // TODO: check use or not remove
         @XmlSchemaType(name = "anyURI")
         protected String locationContainerID;
+        @XmlElement(name = "locationcontainername")
         protected String locationContainerName;
 
-
+        @XmlList
         @XmlElement(name=ShortName.CHILD_RESOURCE)
         protected List<ChildResourceRef> childResource;
   
- 
+        @XmlList
+        @XmlElement(name = "container")
         protected List<Resource> container;
         // TODO: add container resource .compare to csebase
 
@@ -196,7 +203,7 @@ public class LocationPolicy extends AnnounceableResource {
 	 * @return possible object is {@link Duration }
 	 * 
 	 */
-	public Duration getLocationUpdatePeriod() {
+	public String getLocationUpdatePeriod() {
 		return locationUpdatePeriod;
 	}
 
@@ -207,7 +214,7 @@ public class LocationPolicy extends AnnounceableResource {
 	 *            allowed object is {@link Duration }
 	 * 
 	 */
-	public void setLocationUpdatePeriod(Duration value) {
+	public void setLocationUpdatePeriod(String value) {
 		this.locationUpdatePeriod = value;
 	}
 
@@ -370,35 +377,5 @@ public class LocationPolicy extends AnnounceableResource {
 		return this.childResource;
 	}*/
 
-	/**
-	 * Gets the value of the subscription property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the subscription property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSubscription().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link Subscription }
-	 * 
-	 * 
-	 */
-        /*
-	public List<Subscription> getSubscription() {
-		if (subscription == null) {
-			subscription = new ArrayList<Subscription>();
-		}
-		return this.subscription;
-	}*/
 
 }

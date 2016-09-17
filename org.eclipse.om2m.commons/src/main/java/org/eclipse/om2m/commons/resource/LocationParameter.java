@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.Duration;
@@ -68,10 +69,14 @@ public class LocationParameter extends AnnounceableResource {
         // remove the container part
         @XmlSchemaType(name = "anyURI")
         protected String locationContainerID;
+        @XlmElement(name  = "locationame", required = true)
         protected String locationName;
         @XmlElement(required = true)
         protected BigInteger locationStatus;
+        @XmlList
+        @XmlElement(name = "childresource", required = true)
         protected List<ChildResourceRef> childResource;
+        @XmlList
         @XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
         protected List<Subscription> subscription;
 
