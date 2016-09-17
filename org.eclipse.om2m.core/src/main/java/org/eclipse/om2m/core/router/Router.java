@@ -83,7 +83,6 @@ public class Router implements CseService {
 		ResponsePrimitive response = new ResponsePrimitive(request);
 
 		try{
-
 			// Non blocking request handling
 			if (request.getResponseTypeInfo() != null 
 					&& request.getResponseTypeInfo().getResponseType() != null){
@@ -100,6 +99,8 @@ public class Router implements CseService {
 				}
 			}
 
+                        // Testing 1 
+                        LOGGER.info("content Type " + request.getRequestContentType());
 			// Check if the data type has been set
 			if (request.getRequestContentType() == null){
 				request.setRequestContentType(MimeMediaType.XML);
@@ -342,6 +343,10 @@ public class Router implements CseService {
 			return new SubscriptionController();
 		case ResourceType.POLLING_CHANNEL:
 			return new PollingChannelController();
+                case ResourceType.LOCATION_POLICY:
+                        return new LocationPolicyController();
+                case ResourceType.LOCATION_PARAMETER:
+                        return new LocationParameterController();
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
