@@ -69,11 +69,11 @@ public class LocationPolicyController extends Controller {
         // request is create in the cse base  so parent is cse base not group entity
         
         LocationPolicy locationPolicy = null;
-        Group group = null;
         try {
             if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
                 locationPolicy = (LocationPolicy) request.getContent();
             } else {
+                LOGGER.info("logging the contentType" + request.getRequestContentType());
                 locationPolicy = (LocationPolicy) DataMapperSelector.getDataMapperList().
                                  get(request.getRequestContentType()).stringToObj((String)request.getContent());
             }

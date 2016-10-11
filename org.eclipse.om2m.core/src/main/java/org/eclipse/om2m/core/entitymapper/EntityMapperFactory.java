@@ -160,6 +160,10 @@ public class EntityMapperFactory {
 			return new PollingChannelMapper();
 		case ResourceType.REQUEST:
 			return new RequestMapper();
+                case ResourceType.LOCATION_POLICY:
+                        return new LocationPolicyMapper();
+                case ResourceType.LOCATION_PARAMETER:
+                        return new LocationParameterMapper();
 		case ResourceType.MGMT_OBJ:
 			throw new IllegalArgumentException("Cannot get Mapper for MGMT OBJ");
 		default:
