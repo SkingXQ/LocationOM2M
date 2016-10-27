@@ -21,6 +21,7 @@ package org.eclipse.om2m.core.datamapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
 
 import org.eclipse.om2m.datamapping.service.DataMapperService;
 

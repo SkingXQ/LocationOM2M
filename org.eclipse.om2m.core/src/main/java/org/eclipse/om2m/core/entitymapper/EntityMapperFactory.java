@@ -163,7 +163,11 @@ public class EntityMapperFactory {
                 case ResourceType.LOCATION_POLICY:
                         return new LocationPolicyMapper();
                 case ResourceType.LOCATION_PARAMETER:
+<<<<<<< HEAD
+                        return new LocationParameterMapper(); 
+=======
                         return new LocationParameterMapper();
+>>>>>>> 0b04726f059b96e79cfe90a04235a7c5f04f1431
 		case ResourceType.MGMT_OBJ:
 			throw new IllegalArgumentException("Cannot get Mapper for MGMT OBJ");
 		default:
