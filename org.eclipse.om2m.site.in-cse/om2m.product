@@ -83,7 +83,7 @@
       <property name="org.eclipse.equinox.http.jetty.http.port" value="8080" />
       <property name="org.eclipse.om2m.adminRequestingEntity" value="admin:admin" />
       <property name="org.eclipse.om2m.coap.port" value="5683" />
-      <property name="org.eclipse.om2m.cseBaseAddress" value="127.0.0.1" />
+      <property name="org.eclipse.om2m.cseBaseAddress" value="60.205.170.115" />
       <property name="org.eclipse.om2m.cseBaseContext" value="/" />
       <property name="org.eclipse.om2m.cseBaseId" value="in-cse" />
       <property name="org.eclipse.om2m.cseBaseName" value="in-name" />

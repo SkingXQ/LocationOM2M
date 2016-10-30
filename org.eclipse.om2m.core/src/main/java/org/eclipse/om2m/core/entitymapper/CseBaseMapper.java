@@ -59,7 +59,7 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		cseBaseResource.setNodeLink(cseBaseEntity.getNodeLink());
 		cseBaseResource.setCSEID(cseBaseEntity.getCseid());
 		cseBaseResource.setCseType(cseBaseEntity.getCseType());
-		
+		System.out.println("test map attribute");
 		// setting supported resources
 		for (BigInteger ty : cseBaseEntity.getSupportedResourceType()){
 			cseBaseResource.getSupportedResourceType().add(ty);
@@ -68,11 +68,13 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		// setting access control policy ids
 		for (AccessControlPolicyEntity acp : cseBaseEntity.getAccessControlPolicies()){
 			cseBaseResource.getAccessControlPolicyIDs().add(acp.getResourceID());
+                        System.out.println("test policy id access");
 		}		
 		if (!cseBaseEntity.getLabelsEntities().isEmpty()) {
 			for (LabelEntity l : cseBaseEntity.getLabelsEntities()) {
 				cseBaseResource.getLabels().add(l.getLabel());
 			}
+                        System.out.println("test label ");
 		}
 		if (!cseBaseEntity.getPointOfAccess().isEmpty()) {
 			cseBaseResource.getPointOfAccess().addAll(cseBaseEntity.getPointOfAccess());
@@ -83,6 +85,7 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 	protected void mapChildResourceRef(CSEBaseEntity cseBaseEntity, CSEBase cseBaseResource) {
 		// setting child resources refs
 		// setting acps refs
+                System.out.println("test child Resource Ref");
 		for (AccessControlPolicyEntity acp : cseBaseEntity.getChildAccessControlPolicies()){
 			ChildResourceRef child = new ChildResourceRef();
 			child.setResourceName(acp.getName());
@@ -205,7 +208,9 @@ public class CseBaseMapper extends EntityMapper<CSEBaseEntity, CSEBase> {
 		}
 
                 // adding location policy refs
+                System.out.println("test Locationpolicy");
                 for(LocationPolicyEntity lop : entity.getChildLocationPolicy()){
+                        System.out.println("test get locationpolicy" + lop.getLocationName());
                         LocationPolicy reqResource = new LocationPolicyMapper().mapEntityToResource(lop, ResultContent.ATTRIBUTES);
                         resource.getRemoteCSEOrNodeOrAE().add(reqResource);
                 }

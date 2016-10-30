@@ -79,6 +79,7 @@ public abstract class EntityMapper<E extends ResourceEntity, R extends Resource>
 	 */
 	public R mapEntityToResource(E entity, BigInteger resultContent){
 		R result = createResource();
+                System.out.println(resultContent);
 		if(resultContent.equals(ResultContent.ATTRIBUTES) 
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_REF)
 				|| resultContent.equals(ResultContent.ATTRIBUTES_AND_CHILD_RES)

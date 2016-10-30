@@ -279,6 +279,7 @@ public class RestHttpServlet extends HttpServlet {
 	 * @param primitive oneM2M generic request
 	 */
 	private void mapParameters(HttpServletRequest request, RequestPrimitive primitive){
+                LOGGER.info("test " + request.getParameter("api"));
 		if (request.getParameter(HttpParameters.RESPONSE_TYPE) != null){
 			if(primitive.getResponseTypeInfo() == null){
 				primitive.setResponseTypeInfo(new ResponseTypeInfo());

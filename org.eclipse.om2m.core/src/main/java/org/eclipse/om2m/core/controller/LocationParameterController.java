@@ -119,7 +119,7 @@ public class LocationParameterController extends Controller {
 
         // Get the managed object from db
         LocationParameterEntity locationParameterDB = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, locationParameterEntity.getResourceID());
-
+        ((CSEBaseEntity) parentEntity).getChildLocationParameter().add(locationParameterDB);
         dao.update(transaction, parentEntity);
         transaction.commit();
 

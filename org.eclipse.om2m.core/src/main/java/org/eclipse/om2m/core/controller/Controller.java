@@ -287,6 +287,7 @@ public abstract class Controller {
 	protected void setLocationAndCreationContent(RequestPrimitive request, 
 			ResponsePrimitive response, ResourceEntity entity, @SuppressWarnings("rawtypes") EntityMapper mapper){
 		if(request.getResultContent()!= null){
+                        LOGGER.info("test rct ");
 			if (request.getResultContent().equals(ResultContent.HIERARCHICAL_ADRESS)
 					|| request.getResultContent().equals(ResultContent.HIERARCHICAL_AND_ATTRIBUTES)){
 				response.setLocation(entity.getHierarchicalURI());
