@@ -215,6 +215,9 @@ public class Activator implements BundleActivator {
             LocationParameter t = new LocationParameter();
             t.setLocationTargetID("hello");
             t.setLocationName("xiaoqing");
+            t.setLocationContainerID("shit");
+            t.setLocationServer("ad");
+            t.setLocationStatus(BigInteger.valueOf(19));
             return t;
        }
 

@@ -69,16 +69,12 @@ public class LocationPolicyController extends Controller {
             throw new ResourceNotFoundException("Can't find parent resource");
         }        
         // request is create in the cse base  so parent is cse base not group entity
-        
         LocationPolicy locationPolicy = null;
         Group group = null;
-        // so far no wrong
         try {
             if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
                 locationPolicy = (LocationPolicy) request.getContent();
             } else {
-                // hasmaper type:application/xml  application/json
-                // xml to entity , pass
                 LOGGER.info("logging the contentType" + request.getRequestContentType());
                 locationPolicy = (LocationPolicy) DataMapperSelector.getDataMapperList().
                                  get(request.getRequestContentType()).stringToObj((String)request.getContent());
@@ -90,7 +86,6 @@ public class LocationPolicyController extends Controller {
             throw new BadRequestException("Error in provided content");
         }       
         
-        // test here
         LocationPolicyEntity locationPolicyEntity = new LocationPolicyEntity();
 
         // fill entity attributes with resource attributes if exits 
@@ -109,9 +104,6 @@ public class LocationPolicyController extends Controller {
         locationPolicyEntity.setLocationStatus(locationPolicy.getLocationStatus());
         locationPolicyEntity.setLocationGroupId(locationPolicy.getLocationGroupId());
 
-        LOGGER.info("location name " + locationPolicy.getLocationName());
-        LOGGER.info("resource id: " + locationPolicyEntity.getResourceID() + " set create time" + locationPolicyEntity.getCreationTime());
-        LOGGER.info(" parente id : " + locationPolicyEntity.getParentID() + "resource type : " + locationPolicyEntity.getResourceType());
         if (locationPolicy.getName() != null){
             if (!Patterns.checkResourceName(locationPolicy.getName())){
                 throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
@@ -126,37 +118,25 @@ public class LocationPolicyController extends Controller {
         } else {
             locationPolicyEntity.setName(ShortName.LOCATIONPOLICY + "_" + generatedId);
         }
-        LOGGER.info("getnameing :" + locationPolicyEntity.getName());
         locationPolicyEntity.setHierarchicalURI(parentEntity.getHierarchicalURI()+ "/" + locationPolicyEntity.getName());
-        LOGGER.info(" get hierarchical uri:  " + locationPolicyEntity.getHierarchicalURI());
 
         // uri mapper?
         if (!UriMapper.addNewUri(locationPolicyEntity.getHierarchicalURI(), locationPolicyEntity.getResourceID(), ResourceType.LOCATION_POLICY)){
             throw new ConflictException("Name already present in the parent collection.");
         }
        
-        LOGGER.info("uri mapper" + locationPolicyEntity.getLocationName());
         dbs.getDAOFactory().getLocationPolicyDAO().create(transaction, locationPolicyEntity);
         
-        //Class c =  transaction.getClass();
-
-        //LOGGER.info("get DAO " + c.getName());
         // Get the managed object from db
         LocationPolicyEntity locationPolicyDB = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, locationPolicyEntity.getResourceID());
 
-        LOGGER.info("find : dao");
         childPol.add(locationPolicyDB);
-        LOGGER.info("test , childpol. name" + childPol.get(0).getLocationName());
         dao.update(transaction, parentEntity);
-        LOGGER.info("dao: update");
         transaction.commit();
 
-        LOGGER.info("dato.commit");
         response.setResponseStatusCode(ResponseStatusCode.CREATED);
-        LOGGER.info("test " + request.getResultContent());
         // eneity to resource seting the attributes controller/Controller.java 
         setLocationAndCreationContent(request, response, locationPolicyDB);
-        LOGGER.info("response ");
         return response;
     }
 
@@ -177,7 +157,6 @@ public class LocationPolicyController extends Controller {
 
         // Create the object used to create the representation of the resource TODO
         LocationPolicy location = EntityMapperFactory.getLocationPolicyMapper().mapEntityToResource(locationPolicyEntity, request);
-        LOGGER.info("test here" + locationPolicyEntity.getLocationSource());
         response.setContent(location);
 
         response.setResponseStatusCode(ResponseStatusCode.OK);

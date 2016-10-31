@@ -49,23 +49,6 @@ import org.eclipse.om2m.commons.constants.ShortName;
 public class LocationParameterEntity extends AnnounceableSubordinateEntity {
 
 
-/*
-        @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-        protected String locationTargetID;
-        @XmlSchemaType(name = "anyURI")
-        protected String locationServer;
-        // remove the container part
-        @XmlSchemaType(name = "anyURI")
-        protected String locationContainerID;
-        protected String locationName; //MOVE
-        @XmlElement(required = true)
-        protected BigInteger locationStatus;
-        protected List<ChildResourceRef> childResource;
-        @XmlElement(namespace = "http://www.onem2m.org/xml/protocols")
-        protected List<Subscription> subscription;
-
-*/
-
     @Column(name = ShortName.LOCATIONTARGETID)
     protected String locationTargetID;
     @Column(name = ShortName.LOCATIONSERVER)

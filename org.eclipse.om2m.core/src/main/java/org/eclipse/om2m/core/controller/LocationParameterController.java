@@ -93,6 +93,11 @@ public class LocationParameterController extends Controller {
         locationParameterEntity.setLastModifiedTime(DateUtil.now());
         locationParameterEntity.setParentID(parentEntity.getResourceID());
         locationParameterEntity.setResourceType(ResourceType.LOCATION_PARAMETER);
+        locationParameterEntity.setLocationName(locationParameter.getLocationName());
+        locationParameterEntity.setLocationTargetID(locationParameter.getLocationTargetID());
+        locationParameterEntity.setLocationServer(locationParameter.getLocationServer());
+        locationParameterEntity.setLocationContainerID(locationParameter.getLocationContainerID());
+        locationParameterEntity.setLocationStatus(locationParameter.getLocationStatus());
 
         if (locationParameter.getName() != null){
             if (!Patterns.checkResourceName(locationParameter.getName())){

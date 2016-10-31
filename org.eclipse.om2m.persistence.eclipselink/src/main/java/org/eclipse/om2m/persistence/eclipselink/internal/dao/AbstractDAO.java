@@ -34,7 +34,6 @@ public abstract class AbstractDAO<T> implements DAO<T>{
 	public void create(DBTransaction dbTransaction, T resource) {
 		DBTransactionJPAImpl transaction = (DBTransactionJPAImpl) dbTransaction;
 		if (resource instanceof ResourceEntity) {
-                        System.out.println("test transaction create ");
 			List<LabelEntity> lbls = processLabels(dbTransaction, ((ResourceEntity)resource).getLabelsEntities());
 			((ResourceEntity) resource).setLabelsEntities(lbls);
 		}
