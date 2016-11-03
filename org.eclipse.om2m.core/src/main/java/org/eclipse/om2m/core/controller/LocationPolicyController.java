@@ -42,7 +42,7 @@ import org.eclipse.om2m.core.router.Patterns;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
-import org.eclipse.om2m.core.util.GroupUtil;
+import org.eclipse.om2m.core.util.LocationPolicyUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -70,7 +70,6 @@ public class LocationPolicyController extends Controller {
         }        
         // request is create in the cse base  so parent is cse base not group entity
         LocationPolicy locationPolicy = null;
-        Group group = null;
         try {
             if(request.getRequestContentType().equals(MimeMediaType.OBJ)){
                 locationPolicy = (LocationPolicy) request.getContent();
@@ -103,6 +102,7 @@ public class LocationPolicyController extends Controller {
         locationPolicyEntity.setLocationMethod(locationPolicy.getLocationMethod());
         locationPolicyEntity.setLocationStatus(locationPolicy.getLocationStatus());
         locationPolicyEntity.setLocationGroupId(locationPolicy.getLocationGroupId());
+        LocationPolicyUtil.updateLocationInfo(locationPolicyEntity, locationPolicy);
 
         if (locationPolicy.getName() != null){
             if (!Patterns.checkResourceName(locationPolicy.getName())){

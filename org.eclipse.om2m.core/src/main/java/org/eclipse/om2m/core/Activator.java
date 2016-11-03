@@ -202,7 +202,7 @@ public class Activator implements BundleActivator {
             t.setLocationSource(BigInteger.valueOf(10));
             String test = "hello world";
             t.setLocationUpdatePeriod(test);
-            t.setContainerID(test);
+            //t.setContainerID(test);
             t.setLocationName(test);
             t.setLocationGroupId(test);
             t.setLocationMethod(test);

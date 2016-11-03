@@ -61,7 +61,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
  *         &lt;element name="locationUpdatePeriod" type="{http://www.w3.org/2001/XMLSchema}duration" minOccurs="0"/>
  *         &lt;element name="locationTargetID" type="{http://www.onem2m.org/xml/protocols}nodeID" minOccurs="0"/>
  *         &lt;element name="locationServer" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
- *         &lt;element name="locationContainerID" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
+ *         &lt;element name="locationParameter" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
  *         &lt;element name="locationContainerName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="locationStatus" type="{http://www.onem2m.org/xml/protocols}status"/>
  *         &lt;choice minOccurs="0">
@@ -81,7 +81,7 @@ import org.eclipse.om2m.commons.constants.ShortName;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "locationSource", "locationUpdatePeriod",
 		"locationName", "locationStatus", "locationMethod", 
-                "locationGroupId", "childResource", "locationContainerID",
+                "locationGroupId", "childResource", "locationParameter",
                 "locationContainerName", "container"})
 @XmlRootElement(name = "locationPolicy")
 public class LocationPolicy extends AnnounceableResource {
@@ -102,7 +102,7 @@ public class LocationPolicy extends AnnounceableResource {
         
         // TODO: check use or not remove
         @XmlSchemaType(name = "anyURI")
-        protected String locationContainerID;
+        protected String locationParameter;
         @XmlElement(name = "locationcontainername")
         protected String locationContainerName;
 
@@ -111,7 +111,7 @@ public class LocationPolicy extends AnnounceableResource {
         protected List<ChildResourceRef> childResource;
   
         @XmlList
-        @XmlElement(name = "container")
+        @XmlElement(name = "container", namespace = "http://www.onem2m.org/xml/protocols", type = Container.class)
         protected List<Resource> container;
         // TODO: add container resource .compare to csebase
 
@@ -219,24 +219,24 @@ public class LocationPolicy extends AnnounceableResource {
 	}
 
 	/**
-	 * Gets the value of the locationContainerID property.
+	 * Gets the value of the locationParameter property.
 	 * 
 	 * @return possible object is {@link String }
 	 * 
 	 */
-	public String getContainerID() {
-		return locationContainerID;
+	public String getLocationParameter() {
+		return locationParameter;
 	}
 
 	/**
-	 * Sets the value of the locationContainerID property.
+	 * Sets the value of the locationParameter property.
 	 * 
 	 * @param value
 	 *            allowed object is {@link String }
 	 * 
 	 */
-	public void setContainerID(String value) {
-		this.locationContainerID = value;
+	public void setLocationParameter(String value) {
+		this.locationParameter = value;
 	}
 
         /**
