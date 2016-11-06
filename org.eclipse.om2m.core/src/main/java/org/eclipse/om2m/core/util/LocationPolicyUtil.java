@@ -37,6 +37,7 @@ import org.eclipse.om2m.commons.exceptions.MemberNonFoundException;
 import org.eclipse.om2m.commons.exceptions.MemberTypeInconsistentException;
 import org.eclipse.om2m.core.persistence.PersistenceService;
 import org.eclipse.om2m.core.router.Patterns;
+import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
@@ -87,15 +88,83 @@ public class LocationPolicyUtil {
             String macp = findMatch(macpPattern, (String) response.getContent());
             String[] macps = macp.split(" ");
             String parameterContent = getParameterContent(locationPolicy);
+            String locationInfo = "";
             for(int i=0; i< macps.length; i++) {
                 ResponsePrimitive r = retrieveLocalRemoteCSE(macps[i]); 
                 String remoteUrl = findMatch(poaPattern, (String) r.getContent()) + "~" + 
                                    findMatch(csiPattern, (String) r.getContent());
-                LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + remoteUrl);
+                String[] t = macps[i].split("/");
+                r = createRemoteParameter(t[(t.length-1)] , remoteUrl, parameterContent);
+                LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + t[(t.length - 1)]);
+                t = (findMatcher(riPattern, (String) r.getContent())).split("/");
+                LocationPolicy l = locationPolicy;
+                l.setLocationGroupId("local");
+                l.setLocationParameter(findMatcher(riPattern, (String) r.getContent()));
+                String policyContent = DataMapperSelector.getDataMapperList().get("application/xml").objToString(l);
+                LOGGER.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + policyContent);
+                //r = createRemotePolicy(t[(t.length-1)], remoteUrl, policyContent);
             }
+            /*response = createLocalContainer("localCnt");
+            String ri = findMatch(riPattern, ((String) response.getContent()));
+            response = createLocalData(ri, locationInfo);
+            locationPolicy.setContainerName(findMatch(piPattern, (String) response.getContent()));
+*/
         }
     }
 
+    public static ResponsePrimitive retrieveRemoteContainerOrData(String remotePoa) {
+        RequestPrimitive request = new RequestPrimitive();
+        request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+        request.setOperation(Operation.RETRIEVE);
+        request.setTo(remotePoa);
+        request.setRequestContentType(MimeMediaType.XML);
+        request.setResultContent(BigInteger.valueOf(5));
+        ResponsePrimitive response = RestClient.sendRequest(request);
+        if(response.getResponseStatusCode().equals(ResponseStatusCode.OK)) {
+            LOGGER.info("Retrieval the informathion of parameter");
+        } else {
+            LOGGER.info("Error on retrievaling the information of location parameter");
+        }
+        return response;
+    }
+
+    public static ResponsePrimitive createRemotePolicy(String name, String remotePoa, String content) {
+        RequestPrimitive request = new RequestPrimitive();
+        request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+        request.setOperation(Operation.CREATE);
+        request.setTo(remotePoa);
+        request.setResourceType(ResourceType.LOCATION_POLICY);
+        request.setRequestContentType(MimeMediaType.XML);
+        request.setName(name);
+        request.setContent(content);
+        ResponsePrimitive response = RestClient.sendRequest(request);
+        if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
+            || response.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT)){
+            LOGGER.info("create remote parameter");
+        } else {
+            LOGGER.info("Error in registration to another CSE. Retrying in 10s");
+        }
+        return response;
+    }
+
+    public static ResponsePrimitive createRemoteParameter(String name, String remotePoa, String content) {
+        RequestPrimitive request = new RequestPrimitive();
+        request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
+        request.setOperation(Operation.CREATE);
+        request.setTo(remotePoa);
+        request.setResourceType(ResourceType.LOCATION_PARAMETER);
+        request.setRequestContentType(MimeMediaType.XML);
+        request.setName(name);
+        request.setContent(content);
+        ResponsePrimitive response = RestClient.sendRequest(request);
+        if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
+            || response.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT)){
+            LOGGER.info("create remote parameter");
+        } else {
+            LOGGER.info("Error in registration to another CSE. Retrying in 10s");
+        }
+        return response;
+    }
 
     public static ResponsePrimitive createLocalContainer(String name) {
         RequestPrimitive request = new RequestPrimitive();
@@ -176,7 +245,6 @@ public class LocationPolicyUtil {
         request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
         request.setOperation(Operation.RETRIEVE);
         String remotePoa = "http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + "/~"+ remoteCSE;
-        LOGGER.info("AaAaAaAaAaAaAaAaAaA " + remotePoa);
         request.setTo(remotePoa);
         request.setRequestContentType(MimeMediaType.XML);
         request.setResultContent(BigInteger.valueOf(5));
