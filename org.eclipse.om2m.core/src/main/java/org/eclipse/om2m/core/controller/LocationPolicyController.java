@@ -102,7 +102,8 @@ public class LocationPolicyController extends Controller {
         locationPolicyEntity.setLocationMethod(locationPolicy.getLocationMethod());
         locationPolicyEntity.setLocationStatus(locationPolicy.getLocationStatus());
         locationPolicyEntity.setLocationGroupId(locationPolicy.getLocationGroupId());
-        LocationPolicyUtil.updateLocationInfo(locationPolicyEntity, locationPolicy);
+        LocationPolicyUtil.createLocationInfo(locationPolicyEntity, locationPolicy);
+        locationPolicyEntity.setContainerName(locationPolicy.getContainerName());
 
         if (locationPolicy.getName() != null){
             if (!Patterns.checkResourceName(locationPolicy.getName())){

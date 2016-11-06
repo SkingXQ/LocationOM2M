@@ -83,15 +83,12 @@ public class LocationPolicyUtil {
             response = createLocalData(ri, locationPolicy.getContainerName());
             locationPolicy.setContainerName(findMatch(piPattern, (String) response.getContent()));      
         } else {
+            System.out.println("remote");
             ResponsePrimitive response = retrieveLocalGroup(locationPolicy);
             String macp = findMatch(macpPattern, (String) response.getContent());
             String[] macps = macp.split(" ");
-            String parameterContent = getParameterContent(locationPolicy);
             for(int i=0; i< macps.length; i++) {
-                ResponsePrimitive r = retrieveLocalRemoteCSE(macps[i]); 
-                String remoteUrl = findMatch(poaPattern, (String) r.getContent()) + "~" + 
-                                   findMatch(csiPattern, (String) r.getContent());
-                LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + remoteUrl);
+                ResponsePrimitive r =  retrieveLocalRemoteCSE(macps[i]) ;        
             }
         }
     }
@@ -171,12 +168,11 @@ public class LocationPolicyUtil {
         return response;
     }
 
-    public static ResponsePrimitive retrieveLocalRemoteCSE(String remoteCSE) {
+    public static ResponsePrimitive retrieveLocalRemoteCSE(String remotrCSE) {
         RequestPrimitive request = new RequestPrimitive();
         request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
         request.setOperation(Operation.RETRIEVE);
         String remotePoa = "http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + "/~"+ remoteCSE;
-        LOGGER.info("AaAaAaAaAaAaAaAaAaA " + remotePoa);
         request.setTo(remotePoa);
         request.setRequestContentType(MimeMediaType.XML);
         request.setResultContent(BigInteger.valueOf(5));
@@ -197,31 +193,14 @@ public class LocationPolicyUtil {
         return "";
     }
 
-    private static String getParameterContent(LocationPolicy locationPolicy) {
-        ResponsePrimitive response = retrieveLocalLocationParameter(locationPolicy);
-        String content = (String)response.getContent();
-        String res = locationParameterString;
-        res = res.replace("TARGET", findMatch(locationTargetPattern, content));
-        res = res.replace("SERVER", findMatch(locationServerPattern, content));
-        res = res.replace("CONTAINER", findMatch(locationContainerPattern, content));
-        res = res.replace("NAME", findMatch(locationNamePattern, content));
-        res = res.replace("STATUS", findMatch(locationStatusPattern, content));
-        return res;
-
-    }
-
     private static String getLocation(String server) {
 
         String res = server;
         return res;
     }
- 
-
-  
+   
 
      private static String dataString = "<om2m:cin xmlns:om2m=\"http://www.onem2m.org/xml/protocols\">\n<cnf>message</cnf>\n<con>\nHELLO\n</con>\n</om2m:cin>";
-
-     private static String locationParameterString = "<m2m:locationParameter xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><locationTargetID>TARGET</locationTargetID><locationServer>SERVER</locationServer><locationContainerID>CONTAINER</locationContainerID><locationame>NAME</locationame><locationStatus>STATUS</locationStatus></m2m:locationParameter>";
 
      private static String containerString = "<om2m:cnt xmlns:om2m=\"http://www.onem2m.org/xml/protocols\">\n</om2m:cnt>";
 
@@ -233,11 +212,5 @@ public class LocationPolicyUtil {
      private static String serverPattern = "<locationServer>(.*)</locationServer>";
      private static String containerPattern = "<locationcontainername>(.*)</locationcontainername>";
      private static String macpPattern = "<macp>(.*)</macp>";
-     private static String poaPattern = "<poa>(.*)</poa>";
-     private static String csiPattern = "<csi>(.*)</csi>";
-     private static String locationTargetPattern = "<locationTargetID>(.*)</locationTargetID>";
-     private static String locationServerPattern = "<locationServer>(.*)</locationServer>";
-     private static String locationContainerPattern = "<locationContainerID>(.*)</locationContainerID>";
-     private static String locationNamePattern = "<locationame>(.*)</locationame>";
-     private static String locationStatusPattern = "<locationStatus>(.*)</locationStatus>";
+
 }

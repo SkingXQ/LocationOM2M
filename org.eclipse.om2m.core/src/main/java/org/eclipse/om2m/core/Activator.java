@@ -43,6 +43,7 @@ import org.osgi.util.tracker.ServiceTracker;
 // ************************************
 import org.eclipse.om2m.commons.resource.LocationPolicy;
 import org.eclipse.om2m.commons.resource.LocationParameter;
+import org.eclipse.om2m.commons.resource.Group;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.JAXBException;
@@ -101,6 +102,9 @@ public class Activator implements BundleActivator {
                 LocationParameter t1 = test1();
                 String res1 = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t1);
                 LOGGER.info(res1);
+                Group t2 = test2();
+                String res2 = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t2);
+                LOGGER.info(res2);
                 //**********************************
                  
                 
@@ -202,10 +206,11 @@ public class Activator implements BundleActivator {
             t.setLocationSource(BigInteger.valueOf(10));
             String test = "hello world";
             t.setLocationUpdatePeriod(test);
-            //t.setContainerID(test);
+            t.setContainerName(test);
             t.setLocationName(test);
             t.setLocationGroupId(test);
             t.setLocationMethod(test);
+            t.setLocationParameter("parameter");
             t.setLocationStatus(BigInteger.valueOf(10));
             t.setLocationSource(BigInteger.valueOf(19));
             return t;
@@ -220,5 +225,15 @@ public class Activator implements BundleActivator {
             t.setLocationStatus(BigInteger.valueOf(19));
             return t;
        }
+
+      public Group test2() throws JAXBException  {
+            Group g = new Group();
+            g.getMembersAccessControlPolicyIDs().add("shit 1");
+            g.getMemberIDs().add("SHIT 1");
+            g.setMaxNrOfMembers(BigInteger.valueOf(10));
+            g.getMemberIDs().add("SHIT 2");
+            g.getMembersAccessControlPolicyIDs().add("shit 2");
+            return g;
+      }
 
 }

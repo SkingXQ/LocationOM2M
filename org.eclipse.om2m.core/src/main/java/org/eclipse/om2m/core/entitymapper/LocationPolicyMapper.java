@@ -52,6 +52,7 @@ public class LocationPolicyMapper extends EntityMapper<LocationPolicyEntity, Loc
 		resource.setLocationMethod(entity.getLocationMethod());
 		resource.setLocationName(entity.getLocationName());
                 resource.setLocationStatus(entity.getLocationStatus());
+                resource.setContainerName(entity.getContainerName());
 		/*for(AccessControlPolicyEntity acpEntity : entity.getAccessControlPolicies()){
 			resource.getAccessControlPolicyIDs().add(acpEntity.getResourceID());
 		}*/

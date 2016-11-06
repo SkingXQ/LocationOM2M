@@ -57,7 +57,10 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     // TODO: check locationGroupId or gourp id as resource ?
     @Column(name = ShortName.LOCATIONGROUPID)
     protected String locationGroupId;
- 
+
+    @Column(name = ShortName.LOCATIONCONTAINERNAME)
+    protected String locationContainerName; 
+
     // TODO: locationName or name  
     @Column(name = ShortName.LOCATIONNAME)
     protected String locationName;
@@ -183,5 +186,14 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     public void setChildCnt(List<ContainerEntity> childCnt) {
         this.childCnt = childCnt;
     }   
+
+    // get and set location container
+    public String getContainerName() {
+        return locationContainerName;
+    }
+
+    public void setContainerName(String name) {
+        this.locationContainerName = name;
+    }
 
 }
