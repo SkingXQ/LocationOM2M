@@ -28,10 +28,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.om2m.commons.constants.ConsistencyStrategy;
 import org.eclipse.om2m.commons.constants.MemberType;
+import org.eclipse.om2m.commons.constants.AccessControl;
+import org.eclipse.om2m.commons.constants.CSEType;
+import org.eclipse.om2m.commons.constants.Constants;
+import org.eclipse.om2m.commons.constants.MimeMediaType;
+import org.eclipse.om2m.commons.constants.Operation;
+import org.eclipse.om2m.commons.constants.ResourceType;
+import org.eclipse.om2m.commons.constants.ResponseStatusCode;
+import org.eclipse.om2m.commons.constants.ResultContent;
+import org.eclipse.om2m.commons.constants.ShortName;
 import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.LocationParameterEntity;
+import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
+import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
+import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
+import org.eclipse.om2m.commons.entities.CSEBaseEntity;
+import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.resource.LocationPolicy;
+import org.eclipse.om2m.commons.resource.AccessControlPolicy;
+import org.eclipse.om2m.commons.resource.RemoteCSE;
+import org.eclipse.om2m.commons.resource.Container;
+import org.eclipse.om2m.commons.resource.RequestPrimitive;
+import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.MemberNonFoundException;
 import org.eclipse.om2m.commons.exceptions.MemberTypeInconsistentException;
@@ -43,26 +62,6 @@ import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
 import org.eclipse.om2m.core.comm.RestClient;
-
-import org.eclipse.om2m.commons.constants.AccessControl;
-import org.eclipse.om2m.commons.constants.CSEType;
-import org.eclipse.om2m.commons.constants.Constants;
-import org.eclipse.om2m.commons.constants.MimeMediaType;
-import org.eclipse.om2m.commons.constants.Operation;
-import org.eclipse.om2m.commons.constants.ResourceType;
-import org.eclipse.om2m.commons.constants.ResponseStatusCode;
-import org.eclipse.om2m.commons.constants.ResultContent;
-import org.eclipse.om2m.commons.constants.ShortName;
-import org.eclipse.om2m.commons.entities.AccessControlOriginatorEntity;
-import org.eclipse.om2m.commons.entities.AccessControlPolicyEntity;
-import org.eclipse.om2m.commons.entities.AccessControlRuleEntity;
-import org.eclipse.om2m.commons.entities.CSEBaseEntity;
-import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
-import org.eclipse.om2m.commons.resource.AccessControlPolicy;
-import org.eclipse.om2m.commons.resource.RemoteCSE;
-import org.eclipse.om2m.commons.resource.Container;
-import org.eclipse.om2m.commons.resource.RequestPrimitive;
-import org.eclipse.om2m.commons.resource.ResponsePrimitive;
 
 
 public class LocationPolicyUtil {
@@ -76,13 +75,14 @@ public class LocationPolicyUtil {
         throws MemberNonFoundException, MemberTypeInconsistentException{
         if (locationPolicy.getLocationGroupId().equals("local")) {
             ResponsePrimitive response = createLocalContainer("localCnt");
+            String containerName = findMatch(riPattern, (String) response.getContent());
+            locationPolicy.setContainerName(containerName);
             String content = ((String) response.getContent());
             String ri = findMatch(riPattern, content);
             response = retrieveLocalLocationParameter(locationPolicy);
             String server = findMatch(serverPattern, (String )response.getContent());
             //response = createLocalData(ri, getLocation(server));
             response = createLocalData(ri, locationPolicy.getContainerName());
-            locationPolicy.setContainerName(findMatch(piPattern, (String) response.getContent()));      
         } else {
             ResponsePrimitive response = retrieveLocalGroup(locationPolicy);
             String macp = findMatch(macpPattern, (String) response.getContent());
@@ -95,20 +95,24 @@ public class LocationPolicyUtil {
                                    findMatch(csiPattern, (String) r.getContent());
                 String[] t = macps[i].split("/");
                 r = createRemoteParameter(t[(t.length-1)] , remoteUrl, parameterContent);
-                LOGGER.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + t[(t.length - 1)]);
-                t = (findMatcher(riPattern, (String) r.getContent())).split("/");
+                t = (findMatch(riPattern, (String) r.getContent())).split("/");
                 LocationPolicy l = locationPolicy;
                 l.setLocationGroupId("local");
-                l.setLocationParameter(findMatcher(riPattern, (String) r.getContent()));
+                l.setLocationParameter(findMatch(riPattern, (String) r.getContent()));
                 String policyContent = DataMapperSelector.getDataMapperList().get("application/xml").objToString(l);
-                LOGGER.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + policyContent);
-                //r = createRemotePolicy(t[(t.length-1)], remoteUrl, policyContent);
+                r = createRemotePolicy(t[(t.length-1)], remoteUrl, policyContent);
+                String[] containerName = (findMatch(locationContainerNamePattern, (String) r.getContent())).split("/");
+                String ru = remoteUrl + "/" + containerName[containerName.length-1];
+                r = retrieveRemoteContainerOrData(ru);
+                containerName  = (findMatch(chPattern, (String) r.getContent())).split("/");
+                ru = remoteUrl + "/" + containerName[containerName.length-1];
+                r = retrieveRemoteContainerOrData(ru);
+                locationInfo = locationInfo  + findMatch(conPattern, (String) r.getContent());
             }
-            /*response = createLocalContainer("localCnt");
+            response = createLocalContainer("localCnt");
+            locationPolicy.setContainerName(findMatch(piPattern, (String) response.getContent()));
             String ri = findMatch(riPattern, ((String) response.getContent()));
             response = createLocalData(ri, locationInfo);
-            locationPolicy.setContainerName(findMatch(piPattern, (String) response.getContent()));
-*/
         }
     }
 
@@ -257,8 +261,8 @@ public class LocationPolicyUtil {
         return response;
     }
 
-    public static String findMatch(String patternStr, String content) {
-        Pattern pattern = Pattern.compile(patternStr);
+    public static String findMatch(String patternStr, String content) { 
+        Pattern pattern = Pattern.compile(patternStr, Pattern.DOTALL);
         Matcher matcher = pattern.matcher(content);
         if(matcher.find())
             return matcher.group(1);
@@ -308,4 +312,7 @@ public class LocationPolicyUtil {
      private static String locationContainerPattern = "<locationContainerID>(.*)</locationContainerID>";
      private static String locationNamePattern = "<locationame>(.*)</locationame>";
      private static String locationStatusPattern = "<locationStatus>(.*)</locationStatus>";
+     private static String locationContainerNamePattern = "<locationcontainername>(.*)</locationcontainername>";
+     private static String chPattern = "<ch.*>(.*)</ch>";
+     private static String conPattern = "<con>(.*)</con>";
 }
