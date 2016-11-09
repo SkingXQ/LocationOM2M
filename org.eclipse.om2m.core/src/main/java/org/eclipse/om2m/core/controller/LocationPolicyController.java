@@ -154,7 +154,9 @@ public class LocationPolicyController extends Controller {
         // TODO: check
         // checkACP(LocationPolicyEntity.getAccessControlPolicies(), request.getFrom(), 
         //        Operation.RETRIEVE);
-    
+        if (request.getResultContent().equals(10)) {
+            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahello");
+        }
 
         // Create the object used to create the representation of the resource TODO
         LocationPolicy location = EntityMapperFactory.getLocationPolicyMapper().mapEntityToResource(locationPolicyEntity, request);
