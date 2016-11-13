@@ -61,6 +61,9 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
     @Column(name = ShortName.LOCATIONCONTAINERNAME)
     protected String locationContainerName; 
 
+    @Column(name = ShortName.LOCATIONPARAMETER)
+    protected String locationParameter;
+
     // TODO: locationName or name  
     @Column(name = ShortName.LOCATIONNAME)
     protected String locationName;
@@ -194,6 +197,14 @@ public class LocationPolicyEntity extends AnnounceableSubordinateEntity {
 
     public void setContainerName(String name) {
         this.locationContainerName = name;
+    }
+
+    public String getLocationParameter() {
+        return locationParameter;
+    }
+
+    public void setLocationParameter(String value) {
+        locationParameter = value;
     }
 
 }

@@ -62,4 +62,5 @@ public class ResourceType {
 	public static final int REMOTE_CSE_ANNC = 10016;
 	public static final int SCHEDULE_ANNC = 10018;
         public static final int LOCATION_PARAMETER = 10012;
+        public static final int GROUP_LOCATION = 10020;
 }

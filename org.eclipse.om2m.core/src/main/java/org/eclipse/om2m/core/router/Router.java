@@ -60,6 +60,7 @@ import org.eclipse.om2m.core.controller.RequestController;
 import org.eclipse.om2m.core.controller.SubscriptionController;
 import org.eclipse.om2m.core.controller.LocationPolicyController;
 import org.eclipse.om2m.core.controller.LocationParameterController;
+import org.eclipse.om2m.core.controller.GroupLocationController;
 import org.eclipse.om2m.core.datamapper.DataMapperSelector;
 import org.eclipse.om2m.core.nblocking.NonBlockingHandler;
 import org.eclipse.om2m.core.redirector.Redirector;
@@ -345,6 +346,8 @@ public class Router implements CseService {
                         return new LocationPolicyController();
                 case ResourceType.LOCATION_PARAMETER:
                         return new LocationParameterController();
+                case ResourceType.GROUP_LOCATION:
+                        return new GroupLocationController();
 		default : 
 			throw new NotImplementedException("ResourceType: " + resourceType + " is not implemented");
 		}
