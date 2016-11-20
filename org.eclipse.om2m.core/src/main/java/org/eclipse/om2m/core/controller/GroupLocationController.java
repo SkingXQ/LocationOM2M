@@ -78,27 +78,21 @@ public class GroupLocationController extends Controller {
     @Override
     public ResponsePrimitive doRetrieve(RequestPrimitive request) {
         ResponsePrimitive response = new ResponsePrimitive(request);
-        
-        LocationPolicyEntity locationPolicyEntity = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, request.getTargetId());
+        // test for content
+       // String a = "test";
+        //response.setContent((Object) a);
+        String co = (String) request.getContent();
+        ResponsePrimitive r = GroupLocationUtil.retrieveLocalInfo("http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + "/~/" + Constants.CSE_ID);
+        List<String> mncse = GroupLocationUtil.retrieveRemoteCse("", (String) r.getContent());
+        String content = "<incse name=\"" + Constants.CSE_ID + "\">\n";
+        for(String m: mncse) {
+            content += getGroupLocation(m);
 
-        if (locationPolicyEntity == null){
-            throw new ResourceNotFoundException("Resource not found");
-        }   
-        // TODO: check
-        // checkACP(LocationPolicyEntity.getAccessControlPolicies(), request.getFrom(), 
-        //        Operation.RETRIEVE);
-        if (request.getResultContent().equals(10)) {
-            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahello");
         }
-
-        // Create the object used to create the representation of the resource TODO
-        LocationPolicy location = EntityMapperFactory.getLocationPolicyMapper().mapEntityToResource(locationPolicyEntity, request);
-        response.setContent(location);
-
+        content += "</incse>";
+        response.setContent((Object) content);
         response.setResponseStatusCode(ResponseStatusCode.OK);
-
         return response;
-
 	}
      
     // TODO
@@ -135,8 +129,9 @@ public class GroupLocationController extends Controller {
         ResponsePrimitive rdl = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" +
             GroupLocationUtil.findMatch(GroupLocationUtil.ch4Pattern, (String) rcl.getContent()));
         String lli = GroupLocationUtil.findMatch(GroupLocationUtil.conPattern, (String) rdl.getContent());
-        res = lli;
-
+        if(lli.length() != 0) {
+            res = " <chcse name=\"" + lli.split(" ")[0] + "\" pos=\"" + lli.split(" ")[1] + "\">\n";
+        }
         List<String> members = GroupLocationUtil.retrieveRemoteCse(Constants.CSE_NAME, (String) r.getContent());
         if(members.size() == 0) {
             return res;
@@ -155,8 +150,9 @@ public class GroupLocationController extends Controller {
             GroupLocationUtil.findMatch(GroupLocationUtil.ch4Pattern, (String) rc.getContent()));
         String[] li = GroupLocationUtil.findMatch(GroupLocationUtil.conPattern, (String) rd.getContent()).split(":");
         for(int i=0; i<members.size(); i++) {
-            res = res + ":" + li[i];
+            res = res + "  <asncse name=\"" + li[i].split(" ")[0] + "\" pos=\"" + li[i].split(" ")[1] + "\"/>\n";
         }
+        res += " </chcse>\n";
         return res;
     }
 }

@@ -94,6 +94,8 @@ public class Patterns {
 
         public static final Pattern LOCATION_PARAMETER_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/" + ShortName.LOCATIONPARAMETER + Constants.PREFIX_SEPERATOR + ID_STRING);
 
+        public static final Pattern GROUP_LOCATION_PATTERN = Pattern.compile(CSE_BASE_PATTERN + "/grploc");
+
 	/** Non-hierarchical URI pattern */
 	public static final Pattern NON_HIERARCHICAL_PATTERN = Pattern.compile(
  		"(" + CSE_BASE_PATTERN + "/(" + ALL_SHORT_NAMES + ")" + Constants.PREFIX_SEPERATOR + ID_STRING + ")|(" + CSE_BASE_PATTERN+ ")|" +

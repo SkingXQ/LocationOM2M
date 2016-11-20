@@ -306,6 +306,9 @@ public class Router implements CseService {
                 if(Patterns.match(Patterns.LOCATION_PARAMETER_PATTERN, uri)) {
                         return new LocationParameterController();
                 }
+                if(Patterns.match(Patterns.GROUP_LOCATION_PATTERN, uri)) {
+                        return new GroupLocationController();
+                }
 		return null;
 	}
 

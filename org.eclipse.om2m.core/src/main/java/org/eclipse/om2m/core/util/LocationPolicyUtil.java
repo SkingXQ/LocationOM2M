@@ -86,7 +86,7 @@ public class LocationPolicyUtil {
             String ri = findMatch(riPattern, content);
             response = retrieveLocalLocationParameter(locationPolicy);
             String server = findMatch(serverPattern, (String )response.getContent());
-            response = createLocalData(ri, getLocation(locationPolicy.getContainerName()));
+            response = createLocalData(ri, getLocation(locationPolicy.getContainerName(), locationPolicy.getLocationSource()));
             //response = createLocalData(ri, locationPolicy.getContainerName());
         } else {
             ResponsePrimitive response = retrieveLocalGroup(locationPolicy);
@@ -287,7 +287,7 @@ public class LocationPolicyUtil {
 
     }
 
-    private static String getLocation(String server) {
+    private static String getLocation(String server, BigInteger source) {
 
         String res = server.split("/")[1];
         String pos = post("http://api.map.baidu.com/location/ip?ak=79kGVPCbdITkgBmzTBhtYWiFUd460C0V&coor=bd09ll");

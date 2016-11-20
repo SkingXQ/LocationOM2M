@@ -153,7 +153,7 @@ public class RestHttpServlet extends HttpServlet {
 		httpServletResponse.setStatus(httpStatus);
 		httpServletResponse.setHeader(
 				HttpHeaders.RESPONSE_STATUS_CODE, response.getResponseStatusCode().toString());
-
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 		// Set the message body
 		if (response.getContent() != null){
 			// Set the Content-Type header
