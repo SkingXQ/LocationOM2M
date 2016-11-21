@@ -44,6 +44,7 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.eclipse.om2m.commons.resource.LocationPolicy;
 import org.eclipse.om2m.commons.resource.LocationParameter;
 import org.eclipse.om2m.commons.resource.Group;
+import org.eclipse.om2m.commons.resource.Container;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.JAXBException;
@@ -96,15 +97,9 @@ public class Activator implements BundleActivator {
 		} ;
 		dataMapperServiceTracker.open();
                 //********************************** 
-                LocationPolicy t = test();
-                String res = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t);
-                LOGGER.info(res);
-                LocationParameter t1 = test1();
-                String res1 = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t1);
-                LOGGER.info(res1);
-                Group t2 = test2();
-                String res2 = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t2);
-                LOGGER.info(res2);
+                //Container t = test();
+                //String res = DataMapperSelector.getDataMapperList().get("application/xml").objToString(t);
+                //LOGGER.info(res);
                 //**********************************
                  
                 
@@ -201,39 +196,10 @@ public class Activator implements BundleActivator {
         /**
          * Testing the xml 
          */
-        public LocationPolicy test() throws JAXBException {
-            LocationPolicy t = new LocationPolicy();
-            t.setLocationSource(BigInteger.valueOf(10));
-            String test = "hello world";
-            t.setLocationUpdatePeriod(test);
-            t.setContainerName(test);
-            t.setLocationName(test);
-            t.setLocationGroupId(test);
-            t.setLocationMethod(test);
-            t.setLocationParameter("parameter");
-            t.setLocationStatus(BigInteger.valueOf(10));
-            t.setLocationSource(BigInteger.valueOf(19));
+        public Container test() throws JAXBException {
+            Container t = new Container();
+            t.setLocationID("shit");
             return t;
         }
  
-       public LocationParameter test1() throws JAXBException {
-            LocationParameter t = new LocationParameter();
-            t.setLocationTargetID("hello");
-            t.setLocationName("xiaoqing");
-            t.setLocationContainerID("shit");
-            t.setLocationServer("ad");
-            t.setLocationStatus(BigInteger.valueOf(19));
-            return t;
-       }
-
-      public Group test2() throws JAXBException  {
-            Group g = new Group();
-            g.getMembersAccessControlPolicyIDs().add("shit 1");
-            g.getMemberIDs().add("SHIT 1");
-            g.setMaxNrOfMembers(BigInteger.valueOf(10));
-            g.getMemberIDs().add("SHIT 2");
-            g.getMembersAccessControlPolicyIDs().add("shit 2");
-            return g;
-      }
-
 }
