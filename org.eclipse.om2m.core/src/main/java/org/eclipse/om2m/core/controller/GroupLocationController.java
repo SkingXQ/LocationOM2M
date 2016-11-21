@@ -118,11 +118,11 @@ public class GroupLocationController extends Controller {
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
 
         // mn location
-        String locationParameter = GroupLocationUtil.createLocationParameter("hello", "hello", "asdsadas", 12,
+        String locationParameter = GroupLocationUtil.createLocationParameter("hello", "baidu.com", "in-cse", 1,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
-        String locationContainerl = GroupLocationUtil.createLocationPolicy(12, 12, 12,
-            "lcoationame", "locationmethod", "local", locationParameter,
+        String locationContainerl = GroupLocationUtil.createLocationPolicy(1, 12, -1,
+            "lcoationame", "xml", "local", locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         ResponsePrimitive rcl = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" + locationContainerl);
@@ -141,8 +141,8 @@ public class GroupLocationController extends Controller {
         String group = GroupLocationUtil.createGroup(members, GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         // asn location
-        String locationContainer = GroupLocationUtil.createLocationPolicy(12, 12, 12,
-            "lcoationame", "locationmethod", group, locationParameter,
+        String locationContainer = GroupLocationUtil.createLocationPolicy(1, 12, -1,
+            "lcoationame", "xml", group, locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         ResponsePrimitive rc = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" + locationContainer);

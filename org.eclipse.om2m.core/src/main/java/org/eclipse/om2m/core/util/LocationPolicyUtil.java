@@ -79,7 +79,7 @@ public class LocationPolicyUtil {
     public static void createLocationInfo(LocationPolicyEntity locationPolicyEntity, LocationPolicy locationPolicy) 
         throws MemberNonFoundException, MemberTypeInconsistentException{
         if (locationPolicy.getLocationGroupId().equals("local")) {
-            ResponsePrimitive response = createLocalContainer("");
+            ResponsePrimitive response = createLocalContainer("", locationPolicyEntity.getResourceID());
             String containerName = findMatch(riPattern, (String) response.getContent());
             locationPolicy.setContainerName(containerName);
             String content = ((String) response.getContent());
@@ -116,11 +116,12 @@ public class LocationPolicyUtil {
                 if(locationInfo.length()==0) locationInfo = findMatch(conPattern, (String) r.getContent());
                 else locationInfo = locationInfo + ":" + findMatch(conPattern, (String) r.getContent());
             }
-            response = createLocalContainer("");
+            response = createLocalContainer("", locationPolicyEntity.getResourceID());
             locationPolicy.setContainerName(findMatch(riPattern, (String) response.getContent()));
             String ri = findMatch(riPattern, ((String) response.getContent()));
             response = createLocalData(ri, locationInfo);
         }
+        locationPolicy.setLocationStatus(BigInteger.valueOf(1));
     }
 
     public static ResponsePrimitive retrieveRemoteContainerOrData(String remotePoa) {
@@ -175,16 +176,16 @@ public class LocationPolicyUtil {
         return response;
     }
 
-    public static ResponsePrimitive createLocalContainer(String name) {
+    public static ResponsePrimitive createLocalContainer(String name, String locationID) {
         RequestPrimitive request = new RequestPrimitive();
         request.setFrom(Constants.ADMIN_REQUESTING_ENTITY);
-        request.setOperation(Operation.CREATE);
+        request.setOperation(Operation.CREATE); 
         String remotePoa = "http://" + Constants.CSE_IP + ":" + Constants.CSE_PORT + "/~/" + Constants.CSE_ID;
         request.setTo(remotePoa);
         request.setResourceType(ResourceType.CONTAINER);
         request.setRequestContentType(MimeMediaType.XML);
         if(name.length()!=0) request.setName(name);
-        request.setContent(containerString);
+        request.setContent(containerString.replace("LOCATIONID", locationID));
         ResponsePrimitive response = RestClient.sendRequest(request);
         if(response.getResponseStatusCode().equals(ResponseStatusCode.CREATED)
             || response.getResponseStatusCode().equals(ResponseStatusCode.CONFLICT)){
@@ -339,9 +340,9 @@ public class LocationPolicyUtil {
     }  
     private static String dataString = "<om2m:cin xmlns:om2m=\"http://www.onem2m.org/xml/protocols\">\n<cnf>message</cnf>\n<con>HELLO</con>\n</om2m:cin>";
 
-    private static String locationParameterString = "<m2m:locationParameter xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><locationTargetID>TARGET</locationTargetID><locationServer>SERVER</locationServer><locationContainerID>CONTAINER</locationContainerID><locationame>NAME</locationame><locationStatus>STATUS</locationStatus></m2m:locationParameter>";
+    private static String locationParameterString = "<m2m:locationParameter xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><locationServer>SERVER</locationServer><locationContainerID>CONTAINER</locationContainerID><locationame>NAME</locationame><locationStatus>STATUS</locationStatus></m2m:locationParameter>";
 
-    private static String containerString = "<om2m:cnt xmlns:om2m=\"http://www.onem2m.org/xml/protocols\">\n</om2m:cnt>";
+    private static String containerString = "<om2m:cnt xmlns:om2m=\"http://www.onem2m.org/xml/protocols\">\n<li>LOCATIONID</li></om2m:cnt>";
 
     private static String replaceMessage = "HELLO";
 
