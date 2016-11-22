@@ -51,7 +51,7 @@ import org.eclipse.om2m.core.comm.RestClient;
 
 /**
  * Controller for Location
- *
+ * TODO: checking method
  */
 public class GroupLocationController extends Controller {
 
