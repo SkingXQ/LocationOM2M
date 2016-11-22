@@ -112,6 +112,8 @@ public class LocationPolicyUtil {
                 String st = findMatch("<locationstatus>(.*)</locationstatus>", (String) r.getContent());
                 if(Integer.parseInt(st) != 1) {
                     retStatus = 2;
+                    if(locationInfo.length()==0) locationInfo = "None";
+                    else locationInfo = locationInfo + ":None";
                     continue;
                 }
                 String[] containerName = (findMatch(locationContainerNamePattern, (String) r.getContent())).split("/");

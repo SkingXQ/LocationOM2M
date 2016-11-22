@@ -122,7 +122,7 @@ public class GroupLocationController extends Controller {
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         String locationContainerl = GroupLocationUtil.createLocationPolicy(1, 12, -1,
-            "lcoationame", "xml", "local", locationParameter,
+            "lcoationame", "partition", "local", locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         ResponsePrimitive rcl = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" + locationContainerl);
@@ -142,7 +142,7 @@ public class GroupLocationController extends Controller {
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         // asn location
         String locationContainer = GroupLocationUtil.createLocationPolicy(3, 12, -1,
-            "lcoationame", "xml", group, locationParameter,
+            "lcoationame", "partition", group, locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         ResponsePrimitive rc = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" + locationContainer);
