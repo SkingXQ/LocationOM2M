@@ -141,7 +141,7 @@ public class GroupLocationController extends Controller {
         String group = GroupLocationUtil.createGroup(members, GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         // asn location
-        String locationContainer = GroupLocationUtil.createLocationPolicy(1, 12, -1,
+        String locationContainer = GroupLocationUtil.createLocationPolicy(3, 12, -1,
             "lcoationame", "xml", group, locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));

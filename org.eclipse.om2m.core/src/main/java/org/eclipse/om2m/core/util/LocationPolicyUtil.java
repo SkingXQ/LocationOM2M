@@ -78,6 +78,7 @@ public class LocationPolicyUtil {
 
     public static void createLocationInfo(LocationPolicyEntity locationPolicyEntity, LocationPolicy locationPolicy) 
         throws MemberNonFoundException, MemberTypeInconsistentException{
+        int retStatus = 1;
         if (locationPolicy.getLocationGroupId().equals("local")) {
             ResponsePrimitive response = createLocalContainer("", locationPolicyEntity.getResourceID());
             String containerName = findMatch(riPattern, (String) response.getContent());
@@ -86,6 +87,7 @@ public class LocationPolicyUtil {
             String ri = findMatch(riPattern, content);
             response = retrieveLocalLocationParameter(locationPolicy);
             String server = findMatch(serverPattern, (String )response.getContent());
+            if(getLocation(locationPolicy.getContainerName(), locationPolicy.getLocationSource()).length() == 0)  retStatus = -1;
             response = createLocalData(ri, getLocation(locationPolicy.getContainerName(), locationPolicy.getLocationSource()));
             //response = createLocalData(ri, locationPolicy.getContainerName());
         } else {
@@ -103,9 +105,15 @@ public class LocationPolicyUtil {
                 t = (findMatch(riPattern, (String) r.getContent())).split("/");
                 LocationPolicy l = locationPolicy;
                 l.setLocationGroupId("local");
+                l.setLocationSource(BigInteger.valueOf(2));
                 l.setLocationParameter(findMatch(riPattern, (String) r.getContent()));
                 String policyContent = DataMapperSelector.getDataMapperList().get("application/xml").objToString(l);
                 r = createRemotePolicy(t[(t.length-1)], remoteUrl, policyContent);
+                String st = findMatch("<locationstatus>(.*)</locationstatus>", (String) r.getContent());
+                if(Integer.parseInt(st) != 1) {
+                    retStatus = 2;
+                    continue;
+                }
                 String[] containerName = (findMatch(locationContainerNamePattern, (String) r.getContent())).split("/");
                 String ru = remoteUrl + "/" + containerName[containerName.length-1];
                 r = retrieveRemoteContainerOrData(ru);
@@ -119,9 +127,10 @@ public class LocationPolicyUtil {
             response = createLocalContainer("", locationPolicyEntity.getResourceID());
             locationPolicy.setContainerName(findMatch(riPattern, (String) response.getContent()));
             String ri = findMatch(riPattern, ((String) response.getContent()));
+            if(locationInfo.length() == 0) retStatus = -1;
             response = createLocalData(ri, locationInfo);
         }
-        locationPolicy.setLocationStatus(BigInteger.valueOf(1));
+        locationPolicy.setLocationStatus(BigInteger.valueOf(retStatus));
     }
 
     public static ResponsePrimitive retrieveRemoteContainerOrData(String remotePoa) {

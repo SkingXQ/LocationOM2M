@@ -135,6 +135,8 @@ public class GroupLocationUtil {
         lp = lp.replace("LOCATIONGROUP", locationGroup);
         lp = lp.replace("LOCATIONPARAMETER", locationParameter);
         ResponsePrimitive response = create(ResourceType.LOCATION_POLICY, poa, lp);
+        String st = findMatch(locationStatusPattern, (String) response.getContent());
+        if(Integer.parseInt(st) != 1) return "None";
         return findMatch(containerPattern, (String) response.getContent());
     }
 
@@ -196,7 +198,7 @@ public class GroupLocationUtil {
      private static String locationServerPattern = "<locationServer>(.*)</locationServer>";
      private static String locationContainerPattern = "<locationContainerID>(.*)</locationContainerID>";
      private static String locationNamePattern = "<locationame>(.*)</locationame>";
-     private static String locationStatusPattern = "<locationStatus>(.*)</locationStatus>";
+     private static String locationStatusPattern = "<locationstatus>(.*)</locationstatus>";
      private static String locationContainerNamePattern = "<locationcontainername>(.*)</locationcontainername>";
      private static String chPattern = "<ch.*>(.*)</ch>";
      private static String chNamePattern = "<ch rn=\"(.*)\" ty=\"16\">(.*)</ch>";
