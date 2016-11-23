@@ -121,7 +121,7 @@ public class GroupLocationController extends Controller {
         String locationParameter = GroupLocationUtil.createLocationParameter("hello", "baidu.com", "in-cse", 1,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
-        String locationContainerl = GroupLocationUtil.createLocationPolicy(1, 12, -1,
+        String locationContainerl = GroupLocationUtil.createLocationPolicy(1, 0, -1,
             "lcoationame", "partition", "local", locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
@@ -141,7 +141,7 @@ public class GroupLocationController extends Controller {
         String group = GroupLocationUtil.createGroup(members, GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
         // asn location
-        String locationContainer = GroupLocationUtil.createLocationPolicy(3, 12, -1,
+        String locationContainer = GroupLocationUtil.createLocationPolicy(3, 0, -1,
             "lcoationame", "partition", group, locationParameter,
             GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~"
             + GroupLocationUtil.findMatch(GroupLocationUtil.csiPattern, co));
@@ -149,10 +149,15 @@ public class GroupLocationController extends Controller {
         ResponsePrimitive rd = GroupLocationUtil.retrieve(GroupLocationUtil.findMatch(GroupLocationUtil.poaPattern, co) + "~" +
             GroupLocationUtil.findMatch(GroupLocationUtil.ch4Pattern, (String) rc.getContent()));
         String[] li = GroupLocationUtil.findMatch(GroupLocationUtil.conPattern, (String) rd.getContent()).split(":");
+        check("partition");
         for(int i=0; i<members.size(); i++) {
             res = res + "  <asncse name=\"" + li[i].split(" ")[0] + "\" pos=\"" + li[i].split(" ")[1] + "\"/>\n";
         }
         res += " </chcse>\n";
         return res;
     }
+    
+    public void check(String locationStatus) {
+    }
 }
+
