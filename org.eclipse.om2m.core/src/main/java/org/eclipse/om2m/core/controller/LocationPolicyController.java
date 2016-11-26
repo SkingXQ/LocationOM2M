@@ -23,6 +23,7 @@ import org.eclipse.om2m.commons.entities.RemoteCSEEntity;
 import org.eclipse.om2m.commons.entities.ResourceEntity;
 import org.eclipse.om2m.commons.entities.SubscriptionEntity;
 import org.eclipse.om2m.commons.entities.LocationPolicyEntity;
+import org.eclipse.om2m.commons.entities.LocationParameterEntity;
 import org.eclipse.om2m.commons.exceptions.BadRequestException;
 import org.eclipse.om2m.commons.exceptions.ConflictException;
 import org.eclipse.om2m.commons.exceptions.NotImplementedException;
@@ -43,6 +44,7 @@ import org.eclipse.om2m.core.urimapper.UriMapper;
 import org.eclipse.om2m.core.util.ControllerUtil;
 import org.eclipse.om2m.core.util.ControllerUtil.UpdateUtil;
 import org.eclipse.om2m.core.util.LocationPolicyUtil;
+import org.eclipse.om2m.core.util.LocationPolicyUpdateUtil;
 import org.eclipse.om2m.persistence.service.DAO;
 import org.eclipse.om2m.persistence.service.DBService;
 import org.eclipse.om2m.persistence.service.DBTransaction;
@@ -146,7 +148,6 @@ public class LocationPolicyController extends Controller {
     @Override
     public ResponsePrimitive doRetrieve(RequestPrimitive request) {
         ResponsePrimitive response = new ResponsePrimitive(request);
-        
         LocationPolicyEntity locationPolicyEntity = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, request.getTargetId());
 
         if (locationPolicyEntity == null){
@@ -155,16 +156,15 @@ public class LocationPolicyController extends Controller {
         // TODO: check
         // checkACP(LocationPolicyEntity.getAccessControlPolicies(), request.getFrom(), 
         //        Operation.RETRIEVE);
-        if (request.getResultContent().equals(10)) {
-            System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahello");
-        }
+        //if (request.getResultContent().equals(10)) {
+        //    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahello");
+       // }
 
         // Create the object used to create the representation of the resource TODO
         LocationPolicy location = EntityMapperFactory.getLocationPolicyMapper().mapEntityToResource(locationPolicyEntity, request);
         response.setContent(location);
 
         response.setResponseStatusCode(ResponseStatusCode.OK);
-
         return response;
 
 	}
@@ -173,9 +173,74 @@ public class LocationPolicyController extends Controller {
 
     @Override
     public ResponsePrimitive doUpdate(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
 
-            return null;
-	}
+        // retrieve the resource from database
+        LocationPolicyEntity locationPolicyEntity = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, request.getTargetId());
+        LocationParameterEntity locationParameterEmtity = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, (Object) locationPolicyEntity.getLocationParameter());
+        if (locationPolicyEntity == null) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        // check if content is present
+        if (request.getContent() == null) {
+            throw new BadRequestException("A content is requiered for Container update");
+        }
+
+        // create the java object from the resource representation
+        // get the object from the representation
+        LocationPolicy locationPolicy = null;
+        try{
+            if (request.getRequestContentType().equals(MimeMediaType.OBJ)){
+                locationPolicy = (LocationPolicy) request.getContent();
+            } else {
+                locationPolicy = (LocationPolicy)DataMapperSelector.getDataMapperList()
+                    .get(request.getRequestContentType()).stringToObj((String)request.getContent());
+            }
+
+        } catch (ClassCastException e){
+            throw new BadRequestException("Incorrect resource representation in content", e);
+        }
+        if (locationPolicy == null){
+            throw new BadRequestException("Error in provided content");
+        }
+
+        LocationPolicy modifiedAttributes = new LocationPolicy();
+        // locationGroupId        O
+        if(locationPolicy.getLocationGroupId() != null){
+            locationPolicyEntity.setLocationGroupId(locationPolicy.getLocationGroupId());
+            modifiedAttributes.setLocationGroupId(locationPolicy.getLocationGroupId());
+        }
+        // locationParameter       O
+        if(locationPolicy.getLocationParameter() != null){
+            locationPolicyEntity.setLocationParameter(locationPolicy.getLocationParameter());
+            modifiedAttributes.setLocationParameter(locationPolicy.getLocationParameter());
+        }
+
+        // locationMethod        O
+        if(locationPolicy.getLocationMethod() != null){
+            locationPolicyEntity.setLocationMethod(locationPolicy.getLocationMethod());
+            modifiedAttributes.setLocationMethod(locationPolicy.getLocationMethod());
+        }
+
+        LocationPolicyUpdateUtil.updateLocationInfo(locationPolicy, locationPolicyEntity);
+
+        // locationUpdatePeriod        O
+        if(locationPolicy.getLocationUpdatePeriod() != null){
+            locationPolicyEntity.setLocationUpdatePeriod(locationPolicy.getLocationUpdatePeriod());
+            modifiedAttributes.setLocationUpdatePeriod(locationPolicy.getLocationUpdatePeriod());
+        }
+
+        locationPolicyEntity.setLastModifiedTime(DateUtil.now());
+        modifiedAttributes.setLastModifiedTime(locationPolicyEntity.getLastModifiedTime());
+        response.setContent(modifiedAttributes);
+        // update the resource in the database
+        dbs.getDAOFactory().getLocationPolicyDAO().update(transaction, locationPolicyEntity);
+        transaction.commit();
+
+        // set response status code
+        response.setResponseStatusCode(ResponseStatusCode.UPDATED);
+        return response;
+    }
 
     @Override
     public ResponsePrimitive doDelete(RequestPrimitive request) {
@@ -188,7 +253,7 @@ public class LocationPolicyController extends Controller {
         }
 
         UriMapper.deleteUri(locationPolicyEntity.getHierarchicalURI());
-        //Notifier.notifyDeletion(locationParameterEntity.getSubscriptions(), locationParameterEntity);
+        //Notifier.notifyDeletion(locationPolicyEntity.getSubscriptions(), locationPolicyEntity);
 
         // delete the resource in the database
         dbs.getDAOFactory().getLocationPolicyDAO().delete(transaction, locationPolicyEntity);

@@ -4,6 +4,7 @@ package org.eclipse.om2m.core.controller;
 
 
 import java.util.List;
+import java.math.BigInteger;
 
 import org.eclipse.om2m.commons.constants.ConsistencyStrategy;
 import org.eclipse.om2m.commons.constants.Constants;
@@ -97,7 +98,9 @@ public class LocationParameterController extends Controller {
         locationParameterEntity.setLocationTargetID(locationParameter.getLocationTargetID());
         locationParameterEntity.setLocationServer(locationParameter.getLocationServer());
         locationParameterEntity.setLocationContainerID(locationParameter.getLocationContainerID());
+        locationParameter.setLocationStatus(BigInteger.valueOf(1));
         locationParameterEntity.setLocationStatus(locationParameter.getLocationStatus());
+
         locationParameterEntity.setLocationSource(locationParameter.getLocationSource());
     
         if (locationParameter.getName() != null){
