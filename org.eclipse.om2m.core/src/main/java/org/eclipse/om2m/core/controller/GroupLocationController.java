@@ -134,6 +134,7 @@ public class GroupLocationController extends Controller {
         }
         List<String> members = GroupLocationUtil.retrieveRemoteCse(Constants.CSE_NAME, (String) r.getContent());
         if(members.size() == 0) {
+            res += " </chcse>\n";
             return res;
         }
 
