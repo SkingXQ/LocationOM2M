@@ -179,6 +179,23 @@ public class LocationPolicyController extends Controller {
 
     @Override
     public ResponsePrimitive doDelete(RequestPrimitive request) {
-            return null;
-	}
+        ResponsePrimitive response = new ResponsePrimitive(request);
+
+        // retrieve the corresponding resource from database
+        LocationPolicyEntity locationPolicyEntity = dbs.getDAOFactory().getLocationPolicyDAO().find(transaction, request.getTargetId());
+        if (locationPolicyEntity == null) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+
+        UriMapper.deleteUri(locationPolicyEntity.getHierarchicalURI());
+        //Notifier.notifyDeletion(locationParameterEntity.getSubscriptions(), locationParameterEntity);
+
+        // delete the resource in the database
+        dbs.getDAOFactory().getLocationPolicyDAO().delete(transaction, locationPolicyEntity);
+        // commit the transaction
+        transaction.commit();
+        // return the response
+        response.setResponseStatusCode(ResponseStatusCode.DELETED);
+        return response;
+    }
 }

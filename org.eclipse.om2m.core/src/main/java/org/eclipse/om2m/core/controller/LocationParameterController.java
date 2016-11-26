@@ -98,7 +98,8 @@ public class LocationParameterController extends Controller {
         locationParameterEntity.setLocationServer(locationParameter.getLocationServer());
         locationParameterEntity.setLocationContainerID(locationParameter.getLocationContainerID());
         locationParameterEntity.setLocationStatus(locationParameter.getLocationStatus());
-
+        locationParameterEntity.setLocationSource(locationParameter.getLocationSource());
+    
         if (locationParameter.getName() != null){
             if (!Patterns.checkResourceName(locationParameter.getName())){
                 throw new BadRequestException("Name provided is incorrect. Must be:" + Patterns.ID_STRING);
@@ -164,12 +165,89 @@ public class LocationParameterController extends Controller {
 
     @Override
     public ResponsePrimitive doUpdate(RequestPrimitive request) {
+        ResponsePrimitive response = new ResponsePrimitive(request);
 
-            return null;
-	}
+        // retrieve the resource from database
+        LocationParameterEntity locationParameterEntity = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, request.getTargetId());
+        if (locationParameterEntity == null) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        // check if content is present
+        if (request.getContent() == null) {
+            throw new BadRequestException("A content is requiered for Container update");
+        }
+
+        // create the java object from the resource representation
+        // get the object from the representation
+        LocationParameter locationParameter = null;
+        try{
+            if (request.getRequestContentType().equals(MimeMediaType.OBJ)){
+                locationParameter = (LocationParameter) request.getContent();
+            } else {
+                locationParameter = (LocationParameter)DataMapperSelector.getDataMapperList()
+                    .get(request.getRequestContentType()).stringToObj((String)request.getContent());
+            }
+
+        } catch (ClassCastException e){
+            throw new BadRequestException("Incorrect resource representation in content", e);
+        }
+        if (locationParameter == null){
+            throw new BadRequestException("Error in provided content");
+        }
+
+        LocationParameter modifiedAttributes = new LocationParameter();
+        // locationSource        O
+        if(locationParameter.getLocationSource() != null){
+            locationParameterEntity.setLocationSource(locationParameter.getLocationSource());
+            modifiedAttributes.setLocationSource(locationParameter.getLocationSource());
+        }
+        // locationSource        O
+        if(locationParameter.getLocationServer() != null){
+            locationParameterEntity.setLocationServer(locationParameter.getLocationServer());
+            modifiedAttributes.setLocationServer(locationParameter.getLocationServer());
+        }
+
+        // locationSource        O
+        if(locationParameter.getLocationName() != null){
+            locationParameterEntity.setLocationName(locationParameter.getLocationName());
+            modifiedAttributes.setLocationName(locationParameter.getLocationName());
+        }
+
+
+
+
+        locationParameterEntity.setLastModifiedTime(DateUtil.now());
+        modifiedAttributes.setLastModifiedTime(locationParameterEntity.getLastModifiedTime());
+        response.setContent(modifiedAttributes);
+        // update the resource in the database
+        dbs.getDAOFactory().getLocationParameterDAO().update(transaction, locationParameterEntity);
+        transaction.commit();
+
+        // set response status code
+        response.setResponseStatusCode(ResponseStatusCode.UPDATED);
+        return response;
+    }
 
     @Override
     public ResponsePrimitive doDelete(RequestPrimitive request) {
-            return null;
-	}
+        // Generic delete procedure
+        ResponsePrimitive response = new ResponsePrimitive(request);
+
+        // retrieve the corresponding resource from database
+        LocationParameterEntity locationParameterEntity = dbs.getDAOFactory().getLocationParameterDAO().find(transaction, request.getTargetId());
+        if (locationParameterEntity == null) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+
+        UriMapper.deleteUri(locationParameterEntity.getHierarchicalURI());
+        //Notifier.notifyDeletion(locationParameterEntity.getSubscriptions(), locationParameterEntity);
+
+        // delete the resource in the database
+        dbs.getDAOFactory().getLocationParameterDAO().delete(transaction, locationParameterEntity);
+        // commit the transaction
+        transaction.commit();
+        // return the response
+        response.setResponseStatusCode(ResponseStatusCode.DELETED);
+        return response;
+    }
 }

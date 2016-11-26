@@ -58,7 +58,8 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
     // TODO: locationName or name  
     @Column(name = ShortName.LOCATIONNAME)
     protected String locationName;
- 
+    @Column(name = ShortName.LOCATIONSOURCE)
+    protected BigInteger locationSource;
     @Column(name = ShortName.LOCATIONCNTID)
     protected String locationContainerID;
 
@@ -152,6 +153,14 @@ public class LocationParameterEntity extends AnnounceableSubordinateEntity {
          this.locationStatus = locationStatus;
      }   
     
+
+    public BigInteger getLocationSource() {
+        return this.locationSource;
+    }
+
+    public void setLocationSource(BigInteger value) {
+        this.locationSource = value;
+    }
     /**
      * @return the subscriptions
      */

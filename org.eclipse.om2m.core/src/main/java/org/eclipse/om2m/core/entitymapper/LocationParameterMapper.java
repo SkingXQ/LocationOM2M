@@ -50,6 +50,7 @@ public class LocationParameterMapper extends EntityMapper<LocationParameterEntit
 		resource.setLocationServer(entity.getLocationServer());
 		resource.setLocationStatus(entity.getLocationStatus());
 		resource.setLocationName(entity.getLocationName());
+                resource.setLocationSource(entity.getLocationSource());
 		resource.setLocationContainerID(entity.getLocationContainerID());
 		if (!entity.getAnnouncedAttribute().isEmpty()) {			
 			resource.getAnnouncedAttribute().addAll(entity.getAnnouncedAttribute());

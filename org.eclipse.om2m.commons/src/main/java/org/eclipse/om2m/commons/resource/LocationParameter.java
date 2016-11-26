@@ -56,8 +56,8 @@ import javax.xml.datatype.Duration;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "locationTargetID", "locationServer", 
                 "locationContainerID", "locationName", 
-                "locationStatus", "childResource",
-                "subscription" })
+                "locationStatus", "locationSource", 
+                "childResource", "subscription" })
 @XmlRootElement(name = "locationParameter")
 public class LocationParameter extends AnnounceableResource {
 
@@ -73,6 +73,8 @@ public class LocationParameter extends AnnounceableResource {
         protected String locationName;
         @XmlElement(required = true)
         protected BigInteger locationStatus;
+        @XmlElement(name="locationSource")
+        protected BigInteger locationSource;
         @XmlList
         @XmlElement(name = "childresource", required = true)
         protected List<ChildResourceRef> childResource;
@@ -207,6 +209,14 @@ public class LocationParameter extends AnnounceableResource {
         public void setLocationStatus(BigInteger value) {
                 this.locationStatus = value;
         }
+
+    public BigInteger getLocationSource() {
+        return locationSource;
+    }
+
+    public void setLocationSource(BigInteger value) {
+        this.locationSource = value;
+    }
 
         /**
          * Gets the value of the childResource property.
